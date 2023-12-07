@@ -1,0 +1,28 @@
+.section {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column-reverse;
+    flex-direction: column-reverse;
+    width: 90%;
+    margin: 0 auto;
+}
+
+.section__img img {
+    max-width: 100%;
+}
+
+.section--bubble {
+    background-color: #fabc9d;
+    padding: 1rem;
+    border-radius: 1.5rem;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    align-items: center;
+    color: #a47c64;
+}
+
+.section__img {
+    width: 33%;
+}
