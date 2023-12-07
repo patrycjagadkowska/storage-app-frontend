@@ -1,0 +1,20 @@
+.link {
+    text-decoration: none;
+    color: #171717;
+    background-color: #fabc9d;
+    font-size: 1.5rem;
+    padding: 1rem;
+    border-radius: 2rem;
+    transform: scale(1);
+    transition: all 0.2s linear;
+}
+
+.link:hover,
+.link:active {
+    background-color: #747c84;
+    color: #fabc9d;
+}
+
+.link:active {
+    transform: scale(0.9);
+}
