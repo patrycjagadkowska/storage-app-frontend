@@ -28,7 +28,7 @@ const Header = () => {
         </div>
         { navIsOpen && isMobileView && <Backdrop onClick={toggleNav} /> }
         <nav onClick={toggleNav} className={`${classes.nav} ${navIsOpen ? classes["nav-open"] : ""}`}>
-            <NavLink className={({isActive}) => isActive ? classes["active-link"] : ""} to="/">Our plans</NavLink>
+            <NavLink className={({isActive}) => isActive ? classes["active-link"] : ""} to="/plans">Our plans</NavLink>
             <NavLink className={({isActive}) => isActive ? classes["active-link"] : ""} to="/reviews">Reviews</NavLink>
             <NavLink className={({isActive}) => isActive ? classes["active-link"] : ""} to="/signup">Sign up</NavLink>
             <CustomLink to="/login">Log in</CustomLink>

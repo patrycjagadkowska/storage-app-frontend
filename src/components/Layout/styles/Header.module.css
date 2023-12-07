@@ -38,9 +38,14 @@
     position: relative;
     padding: 1rem;
     margin: 0.5rem 0;
+    transition: all 0.2s linear;
 }
 
-.nav a.active-link {
+.nav a:active {
+    transform: scale(0.9);
+}
+
+.nav a.active-link:not(a:last-child) {
     background-color: #a47c64;
     color: #171717;
     width: 100%;
@@ -66,5 +71,18 @@
         font-size: 1.5rem;
         margin: 0 0.5rem;
         padding: 0.5rem;
+    }
+
+    .nav a:hover,
+    .nav a:active {
+        color: #fabc9d;
+    }
+
+    .nav a.active-link:not(a:last-child) {
+        color: #fabc9d;
+        width: fit-content;
+        border-radius: 0;
+        text-align: center;
+        background-color: transparent;
     }
 }
