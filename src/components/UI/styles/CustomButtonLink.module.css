@@ -18,3 +18,8 @@
 .link:active {
     transform: scale(0.9);
 }
+
+.link--dark {
+    background-color: #a47c64;
+    color: #fabc9d
+}

@@ -21,12 +21,12 @@ const Home = () => {
 
     const plansSectionInfo = <div className={classes["main__bubble"]}>
       <p>Check our pricing and compare to other companies - we gurantee the lowest prices!</p>
-      <CustomLink to="/plans">See plans</CustomLink>
+      <CustomLink dark={true} to="/plans">See plans</CustomLink>
     </div>
 
     const demoSectionInfo = <div className={classes["main__bubble"]}>
       <p>Interested but not sure yet? Come and see our demo!</p>
-      <CustomLink to="/login">Check demo</CustomLink>
+      <CustomLink dark={true} to="/login">Check demo</CustomLink>
     </div>
     
     return (
