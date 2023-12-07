@@ -85,4 +85,8 @@
         text-align: center;
         background-color: transparent;
     }
+
+    .nav a:last-child {
+        color: #171717;
+    }
 }
