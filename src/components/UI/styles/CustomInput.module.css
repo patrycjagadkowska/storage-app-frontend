@@ -1,0 +1,53 @@
+.input-group {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    margin: 1rem 0;
+    background-color: #FFF;
+    padding: 0.5rem;
+    border-radius: 1rem;
+}
+
+.input-group.focused {
+    background-color: #f9e1d5;
+}
+
+.input-group label {
+    font-size: 1.25rem;
+    color: #747c84;
+    margin: 0.125rem 0;
+}
+
+.input-group input {
+    min-height: 2rem;
+    border: none;
+    background-color: transparent;
+}
+
+.input-group label.focused {
+    font-size: 1rem;
+}
+
+.input-group input:focus-visible,
+.input-group input:focus,
+.input-group input:active {
+    min-height: 2.25rem;
+    outline: none;
+    font-size: 1.25rem;
+    font-family: inherit;
+}
+
+.input-group input,
+.input-group label {
+    color: #747c84;
+    transition: all 0.2s linear;
+}
+
+.input-group p.error {
+    color: #ff0000;
+    font-size: 0.75rem;
+    margin: 0;
+}
