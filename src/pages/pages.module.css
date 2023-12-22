@@ -81,7 +81,7 @@
 
 .cta-container p {
     color: #a47c64;
-    text-align: justify;
+    text-align: center;
 }
 
 @media (min-width: 768px) {
