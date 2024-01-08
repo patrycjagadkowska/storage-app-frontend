@@ -1,4 +1,9 @@
 import CustomForm from "../UI/CustomForm";
+import {
+  validateEmail,
+  validatePassword,
+  validateRepeatedPassword
+} from "../../constants/validationFns";
 
 const SignupForm = () => {
     const inputs = [
@@ -7,23 +12,28 @@ const SignupForm = () => {
             label: "Email",
             id: "email",
             type: "email",
-            error: "An error occured"
+            initialValue: "",
+            validationFn: validateEmail
         },
         {
             name: "password",
             label: "Password",
             id: "password",
-            type: "password"
+            type: "password",
+            initialValue: "",
+            validationFn: validatePassword
         },
         {
             name: "repeat-pass",
             label: "Repeat password",
             id: "repeat-pass",
-            type: "password"
+            type: "password",
+            initialValue: "",
+            validationFn: validateRepeatedPassword
         }
     ]
     return (
-        <CustomForm inputs={inputs} onSubmit={() => {}} />
+        <CustomForm inputs={inputs} onSubmit={() => {}} button="Sign up" />
     );
 };
 
