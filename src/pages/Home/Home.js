@@ -1,5 +1,5 @@
-import CustomLink from "../components/UI/CustomLink";
-import Section from "../components/HomePage/Section";
+import CustomLink from "../../components/UI/CustomLink";
+import Section from "../../components/HomePage/Section";
 
 import classes from "./pages.module.css";
 

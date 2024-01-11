@@ -1,5 +1,5 @@
-import LoginForm from "../components/Auth/LoginForm";
-import CustomLink from "../components/UI/CustomLink";
+import LoginForm from "../../components/Auth/LoginForm";
+import CustomLink from "../../components/UI/CustomLink";
 
 import classes from "./pages.module.css";
 
