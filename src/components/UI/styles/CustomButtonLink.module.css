@@ -1,4 +1,4 @@
-.link {
+.link, .btn {
     text-decoration: none;
     color: #171717;
     background-color: #fabc9d;
@@ -9,17 +9,27 @@
     transition: all 0.2s linear;
 }
 
+.btn {
+    border: none;
+    width: fit-content;
+    margin: 0 auto;
+}
+
 .link:hover,
-.link:active {
+.link:active,
+.btn:hover,
+.btn:active {
     background-color: #747c84;
     color: #fabc9d;
 }
 
-.link:active {
+.link:active,
+.btn:active {
     transform: scale(0.9);
 }
 
-.link--dark {
+.link--dark,
+.btn--dark {
     background-color: #a47c64;
     color: #fabc9d
 }
