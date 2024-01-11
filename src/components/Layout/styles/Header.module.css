@@ -39,6 +39,13 @@
     padding: 1rem;
     margin: 0.5rem 0;
     transition: all 0.2s linear;
+    border-radius: 2rem;
+}
+
+.nav a:hover,
+.nav a:active {
+    background-color: #747c84;
+    color: #fabc9d;
 }
 
 .nav a:active {
@@ -48,8 +55,7 @@
 .nav a.active-link:not(a:last-child) {
     background-color: #a47c64;
     color: #171717;
-    width: 100%;
-    border-radius: 1rem;
+    border-radius: 2rem;
     text-align: center;
 }
 
