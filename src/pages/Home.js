@@ -31,7 +31,7 @@ const Home = () => {
     
     return (
       <div className={classes["main-container"]}>
-        <Section bubble={false} info={mainSectionInfo} img={mainSectionImg} />
+        <Section bubble={false} info={mainSectionInfo} img={mainSectionImg} main={true} />
         <Section bubble={true} info={plansSectionInfo} img={mainSectionImg} />
         <Section bubble={true} info={demoSectionInfo} img={mainSectionImg} />
       </div>
