@@ -2,9 +2,26 @@
   box-sizing: border-box;
 }
 
+html, body, #root {
+  min-height: 100vh;
+}
+
 body {
   background-color: #171717;
   color: #FFF;
   font-family: 'Roboto', sans-serif;
   margin: 0;
+}
+
+#root {
+  display: -ms-flexbox;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
 }

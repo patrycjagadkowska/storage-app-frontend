@@ -8,6 +8,7 @@
     flex-direction: column;
     border-top: 0.125rem dashed #FFF;
     margin-top: 1rem;
+    width: 100%;
 }
 
 .footer__copyright {
