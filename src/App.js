@@ -5,6 +5,7 @@ import Home from "./pages/Home/Home";
 import Signup from "./pages/Home/Signup";
 import Login from "./pages/Home/Login";
 import PlansPage from "./pages/Home/PlansPage";
+import ReviewsPage from "./pages/Home/ReviewsPage";
 
 function App() {
   const router = createBrowserRouter([
@@ -27,6 +28,10 @@ function App() {
         {
           path: "plans",
           element: <PlansPage />
+        },
+        {
+          path: "reviews",
+          element: <ReviewsPage />
         }
       ]
     }
