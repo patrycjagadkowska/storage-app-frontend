@@ -5,6 +5,7 @@ import CustomLink from "../UI/CustomLink";
 import HamburgerButton from "../UI/HamburgerButton";
 import Backdrop from "../UI/Backdrop";
 import Logo from "./Logo";
+import CustomButton from "../UI/CustomButton";
 
 import classes from "./styles/Header.module.css";
 
@@ -26,19 +27,38 @@ const Header = ({ links, home }) => {
                 isActive ? classes["active-link"] : ""
               }
               to={link.path}
+              key={link.text}
             >
               {link.text}
             </NavLink>
           );
         } else if (link.type === "custom-link") {
-          mappedLink = <CustomLink to={link.path}>{link.text}</CustomLink>;
+          mappedLink = <CustomLink to={link.path} key={link.text}>{link.text}</CustomLink>;
+        } else if (link.type === "svg-link") {
+          mappedLink = (
+            <NavLink
+              className={({ isActive }) =>
+                isActive ? classes["active-link"] : ""
+              }
+              to={link.path}
+              key={link.text}
+            >
+              {link.svg}
+              {link.text}
+            </NavLink>
+          );
+        } else if (link.type === "svg-button") {
+          mappedLink = (
+            <CustomButton onClick={link.fn} key={link.text}>
+              {link.svg}
+              {link.text}
+            </CustomButton>
+          );
         }
         return mappedLink;
       });
       setNavLinks(mappedLinks);
     }, [links]);
-
-    console.log(links);
 
     const toggleNav = () => {
         setNavIsOpen(prevState => !prevState);
