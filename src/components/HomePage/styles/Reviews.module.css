@@ -1,0 +1,54 @@
+.reviews {
+    display: -ms-flexbox;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    margin: 0 1rem;
+}
+
+.review {
+    background-color: #FFF;
+    border-radius: 2rem;
+    border: 0.125rem dashed #171717;
+    padding: 0.5rem;
+    color: #171717;
+    margin: 0.5rem 0;
+}
+
+.review__content {
+    font-style: italic;
+}
+
+.review__author {
+    color: #a47c64;
+    float: right;
+    margin-right: 1rem;
+}
+@media (min-width: 576px) {
+    .reviews {
+        -ms-flex-direction: row;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-around;
+    }
+
+    .review {
+        flex-basis: calc(50% - 2rem);
+    }
+
+    .review:last-child {
+        align-self: center;
+    }
+}
+
+@media (min-width: 768px) {
+    .review {
+        flex-basis: calc(33% - 2rem);
+    }
+
+    .review:last-child {
+        align-self: auto;
+    }
+}
