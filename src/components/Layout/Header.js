@@ -4,6 +4,7 @@ import { useState } from "react";
 import CustomLink from "../UI/CustomLink";
 import HamburgerButton from "../UI/HamburgerButton";
 import Backdrop from "../UI/Backdrop";
+import Logo from "./Logo";
 
 import classes from "./styles/Header.module.css";
 
@@ -18,14 +19,7 @@ const Header = () => {
 
     return (
       <header className={classes.header}>
-        <div className={classes.logo}>
-          <NavLink to="/">
-            <picture>
-              <source media="(min-width:768px)" srcSet="logo.png" />
-              <img src="logo_sm.png" alt="logo" />
-            </picture>
-          </NavLink>
-        </div>
+        <Logo />
         { navIsOpen && isMobileView && <Backdrop onClick={toggleNav} /> }
         <nav onClick={toggleNav} className={`${classes.nav} ${navIsOpen ? classes["nav-open"] : ""}`}>
             <NavLink className={({isActive}) => isActive ? classes["active-link"] : ""} to="/plans">Our plans</NavLink>
