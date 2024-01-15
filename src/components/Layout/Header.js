@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import CustomLink from "../UI/CustomLink";
 import HamburgerButton from "../UI/HamburgerButton";
@@ -8,8 +8,37 @@ import Logo from "./Logo";
 
 import classes from "./styles/Header.module.css";
 
-const Header = () => {
+const Header = ({ links, home }) => {
     const [ navIsOpen, setNavIsOpen ] = useState(false);
+    const [ navLinks, setNavLinks ] = useState([]);
+
+    useEffect(() => {
+      if (!links || links.length === 0) {
+        setNavLinks([]);
+        return;
+      }
+      const mappedLinks = links.map((link) => {
+        let mappedLink;
+        if (link.type === "link") {
+          mappedLink = (
+            <NavLink
+              className={({ isActive }) =>
+                isActive ? classes["active-link"] : ""
+              }
+              to={link.path}
+            >
+              {link.text}
+            </NavLink>
+          );
+        } else if (link.type === "custom-link") {
+          mappedLink = <CustomLink to={link.path}>{link.text}</CustomLink>;
+        }
+        return mappedLink;
+      });
+      setNavLinks(mappedLinks);
+    }, [links]);
+
+    console.log(links);
 
     const toggleNav = () => {
         setNavIsOpen(prevState => !prevState);
@@ -19,13 +48,10 @@ const Header = () => {
 
     return (
       <header className={classes.header}>
-        <Logo />
+        <Logo home={home} />
         { navIsOpen && isMobileView && <Backdrop onClick={toggleNav} /> }
         <nav onClick={toggleNav} className={`${classes.nav} ${navIsOpen ? classes["nav-open"] : ""}`}>
-            <NavLink className={({isActive}) => isActive ? classes["active-link"] : ""} to="/plans">Our plans</NavLink>
-            <NavLink className={({isActive}) => isActive ? classes["active-link"] : ""} to="/reviews">Reviews</NavLink>
-            <NavLink className={({isActive}) => isActive ? classes["active-link"] : ""} to="/signup">Sign up</NavLink>
-            <CustomLink to="/login">Log in</CustomLink>
+            { navLinks }
         </nav>
         <HamburgerButton onClick={toggleNav} navIsOpen={navIsOpen} />
       </header>
