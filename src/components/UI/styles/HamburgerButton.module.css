@@ -22,9 +22,3 @@
 .hamburger-btn.open span {
     background-color: #a47c64;
 }
-
-@media (min-width: 992px) {
-    .hamburger-btn {
-        display: none;
-    }
-}
