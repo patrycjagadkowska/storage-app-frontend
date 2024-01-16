@@ -6,11 +6,11 @@
     display: flex;
     -ms-flex-direction: column;
     flex-direction: column;
+    margin-top: 1rem;
 }
 
 .footer, .dash-footer {
     border-top: 0.125rem dashed #FFF;
-    margin-top: 1rem;
     width: 100%;
 }
 
