@@ -1,4 +1,3 @@
-import { Outlet } from "react-router";
 import { FaWarehouse, FaPowerOff } from "react-icons/fa";
 import { TbTruckDelivery } from "react-icons/tb";
 import { MdPointOfSale } from "react-icons/md";
@@ -6,6 +5,7 @@ import { IoMdContact, IoMdSettings } from "react-icons/io";
 
 import Header from "./Header";
 import DashboardFooter from "./DashboardFooter";
+import DashboardMain from "./DashboardMain";
 
 const DashboardLayout = () => {
     const logout = () => {};
@@ -52,9 +52,7 @@ const DashboardLayout = () => {
     return (
         <>
             <Header home="/dashboard" links={headerLinks} dashboard={true} breakpoint={576} />
-            <main>
-                { Outlet }
-            </main>
+            <DashboardMain />
             <DashboardFooter />
         </>
     );
