@@ -8,6 +8,7 @@ import PlansPage from "./pages/Home/PlansPage";
 import ReviewsPage from "./pages/Home/ReviewsPage";
 
 import DashboardLayout from "./components/Layout/DashboardLayout";
+import Dashboard from "./pages/Dashboard/Dashboard";
 
 function App() {
   const router = createBrowserRouter([
@@ -38,7 +39,13 @@ function App() {
       ]
     }, {
       path: "/dashboard",
-      element: <DashboardLayout />
+      element: <DashboardLayout />,
+      children: [
+        {
+          index: true,
+          element: <Dashboard />
+        }
+      ]
     }
   ]);
 
