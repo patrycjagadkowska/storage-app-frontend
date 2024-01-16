@@ -7,6 +7,8 @@ import Login from "./pages/Home/Login";
 import PlansPage from "./pages/Home/PlansPage";
 import ReviewsPage from "./pages/Home/ReviewsPage";
 
+import DashboardLayout from "./components/Layout/DashboardLayout";
+
 function App() {
   const router = createBrowserRouter([
     {
@@ -34,6 +36,9 @@ function App() {
           element: <ReviewsPage />
         }
       ]
+    }, {
+      path: "/dashboard",
+      element: <DashboardLayout />
     }
   ]);
 
