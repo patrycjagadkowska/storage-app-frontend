@@ -29,7 +29,7 @@ const Layout = () => {
 
     return (
         <>
-            <Header links={headerLinks} home="/" />
+            <Header links={headerLinks} home="/" breakpoint={992} />
             <main>
                 <Outlet />
             </main>
