@@ -9,7 +9,7 @@ import CustomButton from "../UI/CustomButton";
 
 import classes from "./styles/Header.module.css";
 
-const Header = ({ links, home }) => {
+const Header = ({ links, home, dashboard, breakpoint }) => {
     const [ navIsOpen, setNavIsOpen ] = useState(false);
     const [ navLinks, setNavLinks ] = useState([]);
 
@@ -44,14 +44,14 @@ const Header = ({ links, home }) => {
               key={link.text}
             >
               {link.svg}
-              {link.text}
+              <span>{link.text}</span>
             </NavLink>
           );
         } else if (link.type === "svg-button") {
           mappedLink = (
             <CustomButton onClick={link.fn} key={link.text}>
               {link.svg}
-              {link.text}
+              <span>{link.text}</span>
             </CustomButton>
           );
         }
@@ -64,16 +64,16 @@ const Header = ({ links, home }) => {
         setNavIsOpen(prevState => !prevState);
     };
 
-    const isMobileView = window.screen.width < 992;
+    const isMobileView = window.screen.width < breakpoint;
 
     return (
-      <header className={classes.header}>
+      <header className={`${classes.header} ${dashboard ? classes["dash-header"] : ""}`}>
         <Logo home={home} />
         { navIsOpen && isMobileView && <Backdrop onClick={toggleNav} /> }
         <nav onClick={toggleNav} className={`${classes.nav} ${navIsOpen ? classes["nav-open"] : ""}`}>
             { navLinks }
         </nav>
-        <HamburgerButton onClick={toggleNav} navIsOpen={navIsOpen} />
+        { isMobileView && <HamburgerButton onClick={toggleNav} navIsOpen={navIsOpen} />}
       </header>
     );
 };
