@@ -13,6 +13,12 @@
     border: none;
     width: fit-content;
     margin: 0 auto;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .link:hover,
@@ -32,4 +38,25 @@
 .btn--dark {
     background-color: #a47c64;
     color: #fabc9d
+}
+
+.btn span {
+    margin: 0 1rem;
+}
+
+@media (min-width: 576px) {
+    .btn span {
+        display: none;
+    }
+}
+
+@media (min-width: 1200px) {
+    .btn span {
+        display: initial;
+    }
+
+    .btn {
+        -ms-flex-direction: column;
+        flex-direction: column;
+    }
 }
