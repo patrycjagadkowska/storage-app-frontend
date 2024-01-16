@@ -1,4 +1,4 @@
-import { emailRegex, passwordRegex } from "./regex";
+import { emailRegex, passwordRegex, fullNameRegex } from "./regex";
 
 export const validateEmail = (value) => {
     const isValidEmail = emailRegex.test(value);
@@ -29,4 +29,14 @@ export const validateRepeatedPassword = (value, firstPassword) => {
     } else {
         return null;
     }
-}
+};
+
+export const validateName = (value) => {
+    const isValidName = fullNameRegex.test(value);
+
+    if (!isValidName) {
+        return "Please enter a valid name (no numbers or special characters.";
+    } else {
+        return null;
+    }
+};
