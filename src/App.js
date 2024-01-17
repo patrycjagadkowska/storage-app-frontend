@@ -9,6 +9,7 @@ import ReviewsPage from "./pages/Home/ReviewsPage";
 
 import DashboardLayout from "./components/Layout/DashboardLayout";
 import Dashboard from "./pages/Dashboard/Dashboard";
+import Settings, { loader as settingsLoader } from "./pages/Dashboard/Settings";
 
 function App() {
   const router = createBrowserRouter([
@@ -44,6 +45,11 @@ function App() {
         {
           index: true,
           element: <Dashboard />
+        },
+        {
+          path: "settings",
+          element: <Settings />,
+          loader: settingsLoader
         }
       ]
     }
