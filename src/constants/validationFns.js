@@ -24,7 +24,6 @@ export const validateRepeatedPassword = (value, firstPassword) => {
     if (passHasError) {
         return passHasError;
     } else if (passHasError === null && value !== firstPassword) {
-        console.log(firstPassword);
         return "Passwords are not equal";
     } else {
         return null;
