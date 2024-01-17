@@ -43,7 +43,7 @@ const CustomForm = ({ inputs, onSubmit, button }) => {
         let mappedInputs;
         if (inputs && Array.isArray(inputs) && inputs.length > 0) {
             mappedInputs = inputs.map((input) => {
-                const { label, id, name, type, initialValue, validationFn } = input;
+                const { label, id, name, type, initialValue, validationFn, placeholder } = input;
                 let fn;
                 //pass additional data from state to validationFn
                 if (name === "repeat-pass") {
@@ -62,6 +62,7 @@ const CustomForm = ({ inputs, onSubmit, button }) => {
                     validationFn={fn}
                     getInputValue={getInputValue}
                     getError={getError}
+                    placeholder={placeholder}
                   />
                 );
             });

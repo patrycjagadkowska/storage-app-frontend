@@ -4,7 +4,7 @@ import { useInput } from "../../hooks/useInput";
 
 import classes from "./styles/CustomInput.module.css";
 
-const CustomInput = ({ label, id, name, type, initialValue, validationFn, getInputValue, getError }) => {
+const CustomInput = ({ label, id, name, type, initialValue, validationFn, getInputValue, getError, placeholder }) => {
     const [ focused, setFocused ] = useState(false);
     const { value, error, onChangeHandler } = useInput(initialValue, validationFn);
 
@@ -32,6 +32,7 @@ const CustomInput = ({ label, id, name, type, initialValue, validationFn, getInp
           value={value}
           onFocus={focusInput}
           onBlur={blurInput}
+          placeholder={placeholder}
         />
         {error && <p className={classes.error}>{error}</p>}
       </div>
