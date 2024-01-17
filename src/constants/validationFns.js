@@ -35,7 +35,7 @@ export const validateName = (value) => {
     const isValidName = fullNameRegex.test(value);
 
     if (!isValidName) {
-        return "Please enter a valid name (no numbers or special characters.";
+        return "Please enter a valid name (no numbers or special characters).";
     } else {
         return null;
     }
