@@ -48,6 +48,8 @@ const CustomForm = ({ inputs, onSubmit, button }) => {
                 //pass additional data from state to validationFn
                 if (name === "repeat-pass") {
                     fn = { validationFn, data: formValues.password };
+                } else if (name === "repeatPass") {
+                    fn = { validationFn, data: formValues.newPass };
                 } else {
                     fn = {validationFn};
                 }
@@ -70,7 +72,7 @@ const CustomForm = ({ inputs, onSubmit, button }) => {
             mappedInputs = [];
         }
         setCustomInputs(mappedInputs);
-    }, [inputs, getInputValue, getError, formValues.password]);
+    }, [inputs, getInputValue, getError, formValues.password, formValues.newPass]);
 
     return (
         <form className={classes.form} onSubmit={submitHandler}>
