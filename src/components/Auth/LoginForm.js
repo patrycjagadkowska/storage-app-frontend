@@ -1,7 +1,11 @@
+import { useNavigate } from "react-router-dom";
+
 import CustomForm from "../UI/CustomForm";
 import { validateEmail, validatePassword } from "../../constants/validationFns";
 
 const LoginForm = () => {
+    const navigate = useNavigate();
+
     const inputs = [
         {
             name: "email",
@@ -31,7 +35,11 @@ const LoginForm = () => {
                 body: JSON.stringify(formData)
             });
             if (res.status === 200 | res.status === 201) {
-                console.log("It works!");
+                const data = await res.json();
+                const { userId, token } = data;
+                localStorage.setItem("userId", userId);
+                localStorage.setItem("token", token);
+                navigate("/dashboard");
             } else {
                 console.log(res);
             }
