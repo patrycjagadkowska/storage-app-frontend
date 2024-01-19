@@ -10,6 +10,7 @@ import ReviewsPage from "./pages/Home/ReviewsPage";
 import DashboardLayout from "./components/Layout/DashboardLayout";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import Settings, { loader as settingsLoader } from "./pages/Dashboard/Settings";
+import Contacts, { loader as contactsLoader } from "./pages/Dashboard/Contacts";
 
 function App() {
   const router = createBrowserRouter([
@@ -50,6 +51,11 @@ function App() {
           path: "settings",
           element: <Settings />,
           loader: settingsLoader
+        },
+        {
+          path: "contacts",
+          element: <Contacts />,
+          loader: contactsLoader
         }
       ]
     }
