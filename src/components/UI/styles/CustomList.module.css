@@ -1,0 +1,28 @@
+.list {
+    border: 2px #fabc9d solid;
+    padding: 0 2.5rem;
+}
+
+.item {
+    margin: 1rem 0;
+}
+
+.item:not(:last-of-type) {
+    border-bottom: 2px #fabc9d solid;
+}
+
+.item__title {
+    margin: 0;
+}
+
+.item__children {
+    padding: 0.5rem;
+    color: #a47c64;
+}
+
+@media (min-width: 768px) {
+    .list {
+        width: 66%;
+        margin: 0 auto;
+    }
+}

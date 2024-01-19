@@ -1,0 +1,12 @@
+.contact-data {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+}
+
+.contact-data span {
+    margin: 0.25rem 0;
+}
