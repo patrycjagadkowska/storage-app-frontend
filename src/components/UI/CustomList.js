@@ -25,10 +25,10 @@ const CustomList = ({ items }) => {
     }, [items]);
 
     return (
-        <ul className={classes.list}>
+        <ol className={classes.list}>
             { listItems.length > 0 && listItems }
             { listItems.length === 0 && <p>No data found.</p>}
-        </ul>
+        </ol>
     );
 };
 
