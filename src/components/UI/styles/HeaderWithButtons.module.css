@@ -1,0 +1,31 @@
+.header {
+    padding: 0.5rem;
+    margin: 0 auto 1rem;
+}
+
+.header h2 {
+    text-align: center;
+    font-size: 2.5rem;
+}
+
+.header__buttons button {
+    margin: 1rem auto;
+}
+
+.header__buttons span {
+    display: initial;
+}
+
+@media (min-width: 768px) {
+    .header__buttons {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    justify-content: center;
+    }
+
+    .header__buttons button {
+        margin: 0 1rem;
+    }
+}
