@@ -11,6 +11,7 @@ import DashboardLayout from "./components/Layout/DashboardLayout";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import Settings, { loader as settingsLoader } from "./pages/Dashboard/Settings";
 import Contacts, { loader as contactsLoader } from "./pages/Dashboard/Contacts";
+import Supplies, { loader as suppliesLoader } from "./pages/Dashboard/Supplies";
 
 function App() {
   const router = createBrowserRouter([
@@ -56,6 +57,11 @@ function App() {
           path: "contacts",
           element: <Contacts />,
           loader: contactsLoader
+        },
+        {
+          path: "supplies",
+          element: <Supplies />,
+          loader: suppliesLoader
         }
       ]
     }
