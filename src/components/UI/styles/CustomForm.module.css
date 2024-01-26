@@ -9,6 +9,24 @@
     justify-content: center;
 }
 
+.form__row {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.form__row > div {
+    flex-grow: 1;
+}
+
+.form__row button {
+    flex-grow: 0;
+    flex-shrink: 0;
+}
+
 @media (min-width: 576px) {
     .form {
         max-width: 80%;
