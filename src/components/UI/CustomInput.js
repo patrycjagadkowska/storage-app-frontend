@@ -4,26 +4,45 @@ import { useInput } from "../../hooks/useInput";
 
 import classes from "./styles/CustomInput.module.css";
 
-const CustomInput = ({ label, id, name, type, initialValue, validationFn, getInputValue, getError, placeholder }) => {
-    const [ focused, setFocused ] = useState(false);
-    const { value, error, onChangeHandler } = useInput(initialValue, validationFn);
+const CustomInput = ({
+  label,
+  id,
+  name,
+  type,
+  initialValue,
+  validationFn,
+  getInputValue,
+  getError,
+  placeholder,
+  options,
+}) => {
+  const [focused, setFocused] = useState(false);
+  const { value, error, onChangeHandler } = useInput(
+    initialValue,
+    validationFn
+  );
 
-    const focusInput = () => {
-        setFocused(true);
-    };
+  const focusInput = () => {
+    setFocused(true);
+  };
 
-    const blurInput = () => {
-        setFocused(false);
-    };
+  const blurInput = () => {
+    setFocused(false);
+  };
 
-    useEffect(() => {
-        getInputValue({name, value});
-        getError({name, error});
-    }, [value, error, getInputValue, getError, name]);
+  useEffect(() => {
+    getInputValue({ name, value });
+    getError({ name, error });
+  }, [value, error, getInputValue, getError, name]);
 
-    return (
-      <div className={`${classes["input-group"]} ${focused ? classes.focused : ""}`}>
-        <label className={focused ? classes.focused : ""} htmlFor={id}>{label}</label>
+  return (
+    <div
+      className={`${classes["input-group"]} ${focused ? classes.focused : ""}`}
+    >
+      <label className={focused ? classes.focused : ""} htmlFor={id}>
+        {label}
+      </label>
+      {type !== "select" && (
         <input
           type={type}
           name={name}
@@ -34,9 +53,21 @@ const CustomInput = ({ label, id, name, type, initialValue, validationFn, getInp
           onBlur={blurInput}
           placeholder={placeholder}
         />
-        {error && <p className={classes.error}>{error}</p>}
-      </div>
-    );
+      )}
+      {type === "select" && (
+        <select
+          name={name}
+          id={id}
+          onChange={onChangeHandler}
+          onFocus={focusInput}
+          onBlur={blurInput}
+        >
+          { options.map((option) => <option value={option} key={option}>{option}</option>) }
+        </select>
+      )}
+      {error && <p className={classes.error}>{error}</p>}
+    </div>
+  );
 };
 
 export default CustomInput;
