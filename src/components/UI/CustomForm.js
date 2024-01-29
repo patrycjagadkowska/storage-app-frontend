@@ -5,10 +5,16 @@ import CustomButton from "../UI/CustomButton";
 
 import classes from "./styles/CustomForm.module.css";
 
-const CustomForm = ({ inputs, onSubmit, button }) => {
+const CustomForm = ({ inputs, onSubmit, button, getFormValues }) => {
   const [customInputs, setCustomInputs] = useState([]);
   const [formValues, setFormValues] = useState({});
   const [formErrors, setFormErrors] = useState({});
+
+  useEffect(() => {
+    if (getFormValues) {
+      getFormValues(formValues);
+    }
+  }, [formValues, getFormValues]);
 
   const getInputValue = useCallback(
     ({ name, value }) => {
