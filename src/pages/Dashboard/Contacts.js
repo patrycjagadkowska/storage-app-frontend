@@ -10,6 +10,8 @@ const Contacts = () => {
     const [ showForm, setShowForm ] = useState(false);
     const loadedContacts = useLoaderData();
 
+    console.log(loadedContacts);
+
     useEffect(() => {
         if (loadedContacts) {
             setContacts(loadedContacts.data);
