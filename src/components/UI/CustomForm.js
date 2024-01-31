@@ -5,7 +5,7 @@ import CustomButton from "../UI/CustomButton";
 
 import classes from "./styles/CustomForm.module.css";
 
-const CustomForm = ({ inputs, onSubmit, button, getFormValues }) => {
+const CustomForm = ({ inputs, onSubmit, button, getFormValues, formError }) => {
   const [customInputs, setCustomInputs] = useState([]);
   const [formValues, setFormValues] = useState({});
   const [formErrors, setFormErrors] = useState({});
@@ -66,11 +66,13 @@ const CustomForm = ({ inputs, onSubmit, button, getFormValues }) => {
           addOption,
         } = input;
         let fn;
-        //pass additional data from state to validationFn
+        //pass additional data from state or props to validationFn
         if (name === "repeat-pass") {
           fn = { validationFn, data: formValues.password };
         } else if (name === "repeatPass") {
           fn = { validationFn, data: formValues.newPass };
+        } else if (type === "select") {
+          fn = { validationFn, data: options };
         } else {
           fn = { validationFn };
         }
@@ -112,6 +114,7 @@ const CustomForm = ({ inputs, onSubmit, button, getFormValues }) => {
   return (
     <form className={classes.form} onSubmit={submitHandler}>
       {Array.isArray(customInputs) && customInputs.length > 0 && customInputs}
+      {formError && <p>{formError}</p>}
       <CustomButton type="submit">{button}</CustomButton>
     </form>
   );
