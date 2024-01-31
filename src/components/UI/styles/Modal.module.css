@@ -1,0 +1,18 @@
+.modal {
+    position: absolute;
+    z-index: 90;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+    min-width: 80%;
+}
+
+.modal button:first-child {
+    float: right;
+}
+
+.modal h3 {
+    text-align: center;
+    font-size: 2rem;
+}
