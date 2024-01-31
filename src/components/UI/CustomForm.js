@@ -90,7 +90,7 @@ const CustomForm = ({ inputs, onSubmit, button, getFormValues }) => {
               options={options}
             />
             {addOption && (
-              <CustomButton onClick={addOption.handler}>
+              <CustomButton type="button" onClick={addOption.handler}>
                 {addOption.icon} <span>{addOption.button}</span>
               </CustomButton>
             )}
@@ -112,7 +112,7 @@ const CustomForm = ({ inputs, onSubmit, button, getFormValues }) => {
   return (
     <form className={classes.form} onSubmit={submitHandler}>
       {Array.isArray(customInputs) && customInputs.length > 0 && customInputs}
-      <CustomButton>{button}</CustomButton>
+      <CustomButton type="submit">{button}</CustomButton>
     </form>
   );
 };
