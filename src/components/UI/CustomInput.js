@@ -62,6 +62,7 @@ const CustomInput = ({
           onFocus={focusInput}
           onBlur={blurInput}
         >
+            <option value=""></option>
           { options.map((option) => <option value={option} key={option}>{option}</option>) }
         </select>
       )}
