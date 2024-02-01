@@ -15,7 +15,7 @@ const ItemsList = ({ supplyItems }) => {
 
         const mappedItems = supplyItems.map((i) => {
             return {
-                title: i.name,
+                title: i.item,
                 content: <div className={classes.item}>
                     <span>Category: {i.category}</span>
                     <span>Quantity: {i.quantity}</span>
