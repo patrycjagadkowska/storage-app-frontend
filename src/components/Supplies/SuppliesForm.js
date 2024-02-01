@@ -29,6 +29,8 @@ const SuppliesForm = ({
     setFormError(false);
   };
 
+  console.log(supplyData);
+
   const contactsOptions = contacts.map((contact) => contact.name);
   const categoriesOptions = categories.map((category) => category.name);
   const itemsOptions = items.map((item) => item.name);
@@ -162,8 +164,9 @@ const SuppliesForm = ({
 
     setSupplyData((prevData) => {
       const prevItems = [...prevData.items];
+      console.log(prevItems);
       const existingItem = prevItems.find((item) => {
-        return item.name === formValues.name;
+        return item.item === formValues.name;
       });
       if (existingItem) {
         console.log("Item already added");
