@@ -178,7 +178,13 @@ const Supplies = () => {
           listButton={listButton}
           formButton={formButton}
         />
-        {!showForm && <SuppliesList supplies={supplies} />}
+        {!showForm && (
+          <SuppliesList
+            supplies={supplies}
+            contacts={contacts}
+            categories={categories}
+          />
+        )}
         {showForm && (
           <SuppliesForm
             categories={categories}
