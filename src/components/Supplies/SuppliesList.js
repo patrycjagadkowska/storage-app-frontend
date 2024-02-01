@@ -1,9 +1,12 @@
 import { useState, useEffect } from "react";
+import { RiDeleteBinFill } from "react-icons/ri";
+import { FaEdit } from "react-icons/fa";
 
 import CustomList from "../UI/CustomList";
 import SupplyItemsList from "./SupplyItemsList";
+import CustomButton from "../UI/CustomButton";
 
-const SuppliesList = ({ supplies, contacts, categories }) => {
+const SuppliesList = ({ supplies, openDeleteForm, contacts, categories }) => {
     const [ suppliesList, setSuppliesList ] = useState([]);
 
     useEffect(() => {
@@ -14,8 +17,14 @@ const SuppliesList = ({ supplies, contacts, categories }) => {
 
         const mappedSupplies = supplies.map((supply) => {
             const supplier = contacts.find((c) => c.id === supply.ContactId);
+            const deleteFormHandler = () =>{
+                openDeleteForm(supply.id);
+            };
+            
             return {
-                title: `${supply.date} - ${supplier.name}`,
+                title: <div><span>{supply.date} - {supplier.name}</span><div>
+                    <CustomButton><FaEdit /><span>Edit</span></CustomButton>
+                    <CustomButton onClick={deleteFormHandler}><RiDeleteBinFill /><span>Delete</span></CustomButton></div></div>,
                 content: <div>
                     <h4>Supply items</h4>
                     <SupplyItemsList items={supply.Items} categories={categories} />
@@ -23,7 +32,7 @@ const SuppliesList = ({ supplies, contacts, categories }) => {
             };
         });
         setSuppliesList(mappedSupplies);
-    }, [contacts, supplies, categories])
+    }, [contacts, supplies, categories, openDeleteForm]);
 
     return (
         <CustomList items={suppliesList} />

@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { useLoaderData } from "react-router";
+import { useLoaderData, useNavigate } from "react-router";
 
 import HeaderWithButtons from "../../components/UI/HeaderWithButons";
 import SuppliesList from "../../components/Supplies/SuppliesList";
@@ -8,6 +8,7 @@ import { fetchData } from "../../constants/helperFns";
 import AddCategoryForm from "../../components/Supplies/AddCategoryForm";
 import AddItemForm from "../../components/Supplies/AddItemForm";
 import AddSupplierForm from "../../components/Supplies/AddSupplierForm";
+import DeleteSupplyForm from "../../components/Supplies/DeleteSupplyForm";
 
 const Supplies = () => {
     const [ supplies, setSupplies ] = useState([]);
@@ -18,8 +19,11 @@ const Supplies = () => {
     const [ showCategoryModal, setShowCategoryModal ] = useState(false);
     const [ showItemModal, setShowItemModal ] = useState(false);
     const [ showSupplierModal, setShowSupplierModal ] = useState(false);
+    const [ showDeleteSupplyModal, setShowDeleteSupplyModal ] = useState(false);
+    const [ chosenSupply, setChosenSupply ] = useState(null);
     const [ chosenCategory, setChosenCategory ] = useState(null);
     const loadedData = useLoaderData();
+    const navigate = useNavigate();
 
     const getFormValues = useCallback((formValues) => {
         setChosenCategory(formValues.category);
@@ -171,6 +175,37 @@ const Supplies = () => {
         }
     }
 
+    const toggleDeleteSupplyModal = () => {
+      setShowDeleteSupplyModal((prevState) => !prevState);
+    };
+
+    const openDeleteFormHandler = (supplyId) => {
+      setShowDeleteSupplyModal(true);
+      setChosenSupply(supplyId);
+    };
+
+    const deleteSupplyHandler = async () => {
+        if (!chosenSupply) {
+          console.log("No category chosen");
+        }
+
+        const token = localStorage.getItem("token");
+
+        try {
+          const res = await fetch("http://localhost:8080/deleteSupply/"+ chosenSupply, {
+            method: "POST",
+            headers: {
+              "Authorization": "Bearer " + token
+            }
+          });
+          if (res.status === 200 || res.status === 201) {
+            navigate(0);
+          }
+        } catch (error) {
+          console.log(error);
+        }
+    }
+
     return (
       <>
         <HeaderWithButtons
@@ -183,6 +218,7 @@ const Supplies = () => {
             supplies={supplies}
             contacts={contacts}
             categories={categories}
+            openDeleteForm={openDeleteFormHandler}
           />
         )}
         {showForm && (
@@ -214,6 +250,13 @@ const Supplies = () => {
             addSupplierHandler={addSupplierHandler}
           />
         )}
+        {
+          showDeleteSupplyModal &&
+          <DeleteSupplyForm
+          toggleModal={toggleDeleteSupplyModal}
+          deleteSupply={deleteSupplyHandler}
+          />
+        }
       </>
     );
 };
