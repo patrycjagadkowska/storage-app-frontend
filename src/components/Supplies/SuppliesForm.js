@@ -29,8 +29,6 @@ const SuppliesForm = ({
     setFormError(false);
   };
 
-  console.log(supplyData);
-
   const contactsOptions = contacts.map((contact) => contact.name);
   const categoriesOptions = categories.map((category) => category.name);
   const itemsOptions = items.map((item) => item.name);
