@@ -92,3 +92,40 @@ export const validateOptionalEmail = (value) => {
 
     return validateEmail(value);
 };
+
+export const validateDate = (value) => {
+    const inputDate = new Date(value);
+    const todayDate = new Date();
+
+    if (todayDate - inputDate < 0) {
+        return "Please enter a valid date (not later than today).";
+    } else {
+      return null;
+    }
+};
+
+export const validateSelect = (value, options) => {
+  const isOneOfOptions = options.find((option) => option === value);
+
+    if (!value || value === "" || value.trim() === "" || !isOneOfOptions) {
+      return "Please choose one of the options.";
+    } else {
+      return null;
+    }
+};
+
+export const validateQuantity = (value) => {
+  if (parseInt(value) <= 0) {
+    return "Please enter a quantity (number higher than 0).";
+  } else {
+    return null;
+  }
+};
+
+export const validatePrice = (value) => {
+  if (parseFloat(value) <= 0) {
+    return "Please enter a valid price (higher than 0).";
+  } else {
+    return null;
+  }
+};
