@@ -6,7 +6,7 @@ import CustomList from "../UI/CustomList";
 import SupplyItemsList from "./SupplyItemsList";
 import CustomButton from "../UI/CustomButton";
 
-const SuppliesList = ({ supplies, openDeleteForm, contacts, categories }) => {
+const SuppliesList = ({ supplies, openDeleteForm, openEditForm, contacts, categories }) => {
     const [ suppliesList, setSuppliesList ] = useState([]);
 
     useEffect(() => {
@@ -17,13 +17,16 @@ const SuppliesList = ({ supplies, openDeleteForm, contacts, categories }) => {
 
         const mappedSupplies = supplies.map((supply) => {
             const supplier = contacts.find((c) => c.id === supply.ContactId);
-            const deleteFormHandler = () =>{
+            const deleteFormHandler = () => {
                 openDeleteForm(supply.id);
+            };
+            const editFormHandler = () => {
+                openEditForm(supply.id);
             };
             
             return {
                 title: <div><span>{supply.date} - {supplier.name}</span><div>
-                    <CustomButton><FaEdit /><span>Edit</span></CustomButton>
+                    <CustomButton onClick={editFormHandler}><FaEdit /><span>Edit</span></CustomButton>
                     <CustomButton onClick={deleteFormHandler}><RiDeleteBinFill /><span>Delete</span></CustomButton></div></div>,
                 content: <div>
                     <h4>Supply items</h4>
@@ -32,7 +35,7 @@ const SuppliesList = ({ supplies, openDeleteForm, contacts, categories }) => {
             };
         });
         setSuppliesList(mappedSupplies);
-    }, [contacts, supplies, categories, openDeleteForm]);
+    }, [contacts, supplies, categories, openDeleteForm, openEditForm]);
 
     return (
         <CustomList items={suppliesList} />

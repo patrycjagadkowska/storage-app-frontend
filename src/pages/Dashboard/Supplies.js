@@ -9,6 +9,7 @@ import AddCategoryForm from "../../components/Supplies/AddCategoryForm";
 import AddItemForm from "../../components/Supplies/AddItemForm";
 import AddSupplierForm from "../../components/Supplies/AddSupplierForm";
 import DeleteSupplyForm from "../../components/Supplies/DeleteSupplyForm";
+import EditSupplyForm from "../../components/Supplies/EditSupplyForm";
 
 const Supplies = () => {
     const [ supplies, setSupplies ] = useState([]);
@@ -20,6 +21,7 @@ const Supplies = () => {
     const [ showItemModal, setShowItemModal ] = useState(false);
     const [ showSupplierModal, setShowSupplierModal ] = useState(false);
     const [ showDeleteSupplyModal, setShowDeleteSupplyModal ] = useState(false);
+    const [ showEditSupplyModal, setShowEditSupplyModal ] = useState(false);
     const [ chosenSupply, setChosenSupply ] = useState(null);
     const [ chosenCategory, setChosenCategory ] = useState(null);
     const loadedData = useLoaderData();
@@ -186,7 +188,8 @@ const Supplies = () => {
 
     const deleteSupplyHandler = async () => {
         if (!chosenSupply) {
-          console.log("No category chosen");
+          console.log("No supply chosen");
+          return;
         }
 
         const token = localStorage.getItem("token");
@@ -206,6 +209,57 @@ const Supplies = () => {
         }
     }
 
+    const toggleEditSupplyModal = () => {
+      setShowEditSupplyModal((prevState) => !prevState);
+    };
+
+    const openEditFormHandler = (supplyId) => {
+      setShowEditSupplyModal(true);
+      setChosenSupply(supplyId);
+    };
+
+   
+
+    const editSupplyHandler = async (formValues) => {
+        if (!chosenSupply) {
+          console.log("No supply chosen");
+          return;
+        }
+
+        const token = localStorage.getItem("token");
+        const supplierId = contacts.find((c) => c.name === formValues.supplier).id;
+        //editting items not available yet
+        const prevItems = supplies.find((s) => s.id === chosenSupply).Items.map((item) => {
+          return {
+            itemId: item.id,
+            purchasePrice: item.SupplyItem.purchasePrice,
+            quantity: item.SupplyItem.quantity,
+          }
+        });
+
+        try {
+          const res = await fetch("http://localhost:8080/supplies/" + chosenSupply, {
+            method: "POST",
+            headers: {
+              "Authorization": "Bearer " + token,
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              supplierId,
+              date: formValues.date,
+              items: prevItems
+            })
+          });
+          if (res.status === 200 || res.status === 201) {
+            navigate(0);
+          }
+        } catch (error) {
+          console.log(error);
+        }
+    };
+
+    const supplyToBeEditted = supplies.find((s) => s.id === chosenSupply);
+
     return (
       <>
         <HeaderWithButtons
@@ -219,6 +273,7 @@ const Supplies = () => {
             contacts={contacts}
             categories={categories}
             openDeleteForm={openDeleteFormHandler}
+            openEditForm={openEditFormHandler}
           />
         )}
         {showForm && (
@@ -255,6 +310,17 @@ const Supplies = () => {
           <DeleteSupplyForm
           toggleModal={toggleDeleteSupplyModal}
           deleteSupply={deleteSupplyHandler}
+          />
+        }
+        {
+          showEditSupplyModal &&
+          <EditSupplyForm
+          toggleModal={toggleEditSupplyModal}
+          editSupply={editSupplyHandler}
+          contacts={contacts}
+          supply={supplyToBeEditted}
+          editSupplyHandler={editSupplyHandler}
+          categories={categories}
           />
         }
       </>
