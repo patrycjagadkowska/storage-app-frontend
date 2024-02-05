@@ -162,7 +162,6 @@ const SuppliesForm = ({
 
     setSupplyData((prevData) => {
       const prevItems = [...prevData.items];
-      console.log(prevItems);
       const existingItem = prevItems.find((item) => {
         return item.item === formValues.name;
       });
