@@ -4,7 +4,7 @@ import { useNavigate } from "react-router";
 
 import CustomForm from "../UI/CustomForm";
 import CustomButton from "../UI/CustomButton";
-import ItemsList from "./ItemsList";
+import ItemsList from "../UI/ItemsList";
 import { validateDate, validateSelect } from "../../constants/validationFns";
 
 const SuppliesForm = ({
@@ -243,7 +243,7 @@ const SuppliesForm = ({
         />
       )}
       {firstFormFilled && supplyData.items.length > 0 && (
-        <ItemsList supplyItems={supplyData.items} />
+        <ItemsList supplyItems={supplyData.items} title="Added items" />
       )}
       {firstFormFilled && (
         <>

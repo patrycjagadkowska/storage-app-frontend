@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 
-import CustomList from "../UI/CustomList";
+import CustomList from "./CustomList";
 
-import classes from "./Supplies.module.css";
+import classes from "./styles/CustomList.module.css";
 
 const ItemsList = ({ itemsArray }) => {
     const [ items, setItems ] = useState([]);
