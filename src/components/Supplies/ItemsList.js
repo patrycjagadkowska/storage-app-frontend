@@ -4,16 +4,16 @@ import CustomList from "../UI/CustomList";
 
 import classes from "./Supplies.module.css";
 
-const ItemsList = ({ supplyItems }) => {
+const ItemsList = ({ itemsArray }) => {
     const [ items, setItems ] = useState([]);
 
     useEffect(() => {
-        if (!supplyItems || supplyItems.length === 0) {
+        if (!itemsArray || itemsArray.length === 0) {
             setItems([]);
             return;
         }
 
-        const mappedItems = supplyItems.map((i) => {
+        const mappedItems = itemsArray.map((i) => {
             return {
                 title: i.item,
                 content: <div className={classes.item}>
@@ -25,8 +25,7 @@ const ItemsList = ({ supplyItems }) => {
         });
 
         setItems(mappedItems);
-    }, [supplyItems]);
-
+    }, [itemsArray]);
     return (
         <div className={classes["items-list"]}>
             <h3>Added items</h3>
