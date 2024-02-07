@@ -4,7 +4,7 @@ import CustomList from "./CustomList";
 
 import classes from "./styles/CustomList.module.css";
 
-const ItemsList = ({ itemsArray }) => {
+const ItemsList = ({ itemsArray, title }) => {
     const [ items, setItems ] = useState([]);
 
     useEffect(() => {
@@ -28,7 +28,7 @@ const ItemsList = ({ itemsArray }) => {
     }, [itemsArray]);
     return (
         <div className={classes["items-list"]}>
-            <h3>Added items</h3>
+            <h3>{title}</h3>
             <CustomList items={items} />
         </div>
     );
