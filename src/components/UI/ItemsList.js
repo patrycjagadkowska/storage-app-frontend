@@ -15,7 +15,7 @@ const ItemsList = ({ itemsArray, title }) => {
 
         const mappedItems = itemsArray.map((i) => {
             return {
-                title: i.item,
+                title: i.item || i.name,
                 content: <div className={classes.item}>
                     <span>Category: {i.category}</span>
                     <span>Quantity: {i.quantity}</span>
