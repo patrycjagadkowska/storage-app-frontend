@@ -1,10 +1,11 @@
-import { useLoaderData } from "react-router";
+import { useLoaderData, useNavigate } from "react-router";
 import { useState, useEffect, useCallback } from "react";
 
 import { fetchData } from "../../constants/helperFns";
 import HeaderWithButtons from "../../components/UI/HeaderWithButons";
 import SalesForm from "../../components/Sales/SalesForm";
 import SalesList from "../../components/Sales/SalesList";
+import AddContactForm from "../../components/ModalForms/AddContactForm";
 
 const Sales = () => {
     const [ sales, setSales ] = useState([]);
@@ -13,7 +14,9 @@ const Sales = () => {
     const [ items, setItems ] = useState([]);
     const [ showForm, setShowForm ] = useState(false);
     const [ chosenCategory, setChosenCategory ] = useState(null);
+    const [ openCustomerForm, setOpenCustomerForm ] = useState(false);
     const loadedData = useLoaderData();
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (!loadedData.sales || !Array.isArray(loadedData.sales) || loadedData.sales.length === 0) {
@@ -75,6 +78,32 @@ const Sales = () => {
         text: "Add sale"
     };
 
+    const addCustomerHandler = async (formValues) => {
+      const token = localStorage.getItem("token");
+
+      try {
+        const res = await fetch("http://localhost:8080/addContact", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + token
+          },
+          body: JSON.stringify(formValues)
+        });
+        if (res.status === 200 || res.status === 201) {
+          navigate(0);
+        } else {
+          console.log(res);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    const toggleCustomerModal = () => {
+      setOpenCustomerForm((prevState) => !prevState);
+    };
+
     return (
       <>
         <HeaderWithButtons
@@ -95,6 +124,13 @@ const Sales = () => {
             contacts={contacts}
             getFormValues={getFormValues}
             items={items}
+            openCustomerForm={toggleCustomerModal}
+          />
+        )}
+        {openCustomerForm && (
+          <AddContactForm
+            addHandler={addCustomerHandler}
+            toggleModal={toggleCustomerModal}
           />
         )}
       </>

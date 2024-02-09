@@ -12,7 +12,7 @@ import {
   validateQuantity,
 } from "../../constants/validationFns";
 
-const SalesForm = ({ contacts, categories, items, getFormValues }) => {
+const SalesForm = ({ contacts, categories, items, getFormValues, openCustomerForm }) => {
     const [ formError, setFormError ] = useState(null);
     const [ firstFormFilled, setFirstFormFilled ] = useState(false);
     const [ formValues, setFormValues ] = useState({
@@ -50,7 +50,7 @@ const SalesForm = ({ contacts, categories, items, getFormValues }) => {
             addOption: {
                 icon: <MdOutlinePlaylistAdd />,
                 button: "Add customer",
-                handler: () => {}
+                handler: openCustomerForm
             }
         }
     ];
