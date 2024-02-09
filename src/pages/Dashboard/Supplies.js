@@ -9,7 +9,7 @@ import AddCategoryForm from "../../components/ModalForms/AddCategoryForm";
 import AddItemForm from "../../components/ModalForms/AddItemForm";
 import AddContactForm from "../../components/ModalForms/AddContactForm";
 import DeleteSupplyForm from "../../components/Supplies/DeleteSupplyForm";
-import EditSupplyForm from "../../components/Supplies/EditSupplyForm";
+import EditForm from "../../components/ModalForms/EditForm";
 
 const Supplies = () => {
     const [ supplies, setSupplies ] = useState([]);
@@ -314,12 +314,11 @@ const Supplies = () => {
         }
         {
           showEditSupplyModal &&
-          <EditSupplyForm
+          <EditForm
           toggleModal={toggleEditSupplyModal}
-          editSupply={editSupplyHandler}
           contacts={contacts}
           supply={supplyToBeEditted}
-          editSupplyHandler={editSupplyHandler}
+          editHandler={editSupplyHandler}
           categories={categories}
           />
         }
