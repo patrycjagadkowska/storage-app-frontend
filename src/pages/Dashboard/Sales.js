@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import { fetchData } from "../../constants/helperFns";
 import HeaderWithButtons from "../../components/UI/HeaderWithButons";
 import SalesForm from "../../components/Sales/SalesForm";
+import SalesList from "../../components/Sales/SalesList";
 
 const Sales = () => {
     const [ sales, setSales ] = useState([]);
@@ -81,6 +82,13 @@ const Sales = () => {
           listButton={listButton}
           formButton={formButton}
         />
+        {!showForm && (
+          <SalesList
+            sales={sales}
+            contacts={contacts}
+            categories={categories}
+          />
+        )}
         {showForm && (
           <SalesForm
             categories={categories}
