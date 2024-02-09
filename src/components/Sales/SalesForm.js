@@ -18,7 +18,6 @@ const SalesForm = ({
   items,
   getFormValues,
   openCustomerForm,
-  openCategoryForm,
 }) => {
   const [formError, setFormError] = useState(null);
   const [firstFormFilled, setFirstFormFilled] = useState(false);
@@ -92,11 +91,6 @@ const SalesForm = ({
       options: categoriesOptions,
       validationFn: validateSelect,
       initialValue: "",
-      addOption: {
-        icon: <MdOutlinePlaylistAdd />,
-        button: "Add category",
-        handler: openCategoryForm,
-      },
     },
     {
       label: "Item name",
