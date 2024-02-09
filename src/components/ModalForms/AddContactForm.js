@@ -2,7 +2,7 @@ import Modal from "../UI/Modal";
 import CustomForm from "../UI/CustomForm";
 import { validateContactName, validateOptionalEmail, validatePhone, validateAddress } from "../../constants/validationFns";
 
-const AddSupplierForm = ({ toggleModal, addSupplierHandler }) => {
+const AddContactForm = ({ toggleModal, addHandler }) => {
     const inputs = [
         {
             label: "Name",
@@ -39,10 +39,10 @@ const AddSupplierForm = ({ toggleModal, addSupplierHandler }) => {
 
     return (
         <Modal toggleModal={toggleModal}>
-            <h3>Add new supplier</h3>
-            <CustomForm inputs={inputs} onSubmit={addSupplierHandler} button="Add" />
+            <h3>Add new contact</h3>
+            <CustomForm inputs={inputs} onSubmit={addHandler} button="Add" />
         </Modal>
     );
 };
 
-export default AddSupplierForm;
+export default AddContactForm;

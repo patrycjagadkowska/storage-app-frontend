@@ -7,7 +7,7 @@ import SuppliesForm from "../../components/Supplies/SuppliesForm";
 import { fetchData } from "../../constants/helperFns";
 import AddCategoryForm from "../../components/Supplies/AddCategoryForm";
 import AddItemForm from "../../components/Supplies/AddItemForm";
-import AddSupplierForm from "../../components/Supplies/AddSupplierForm";
+import AddContactForm from "../../components/ModalForms/AddContactForm";
 import DeleteSupplyForm from "../../components/Supplies/DeleteSupplyForm";
 import EditSupplyForm from "../../components/Supplies/EditSupplyForm";
 
@@ -300,9 +300,9 @@ const Supplies = () => {
           />
         )}
         {showSupplierModal && !showCategoryModal && !showItemModal && (
-          <AddSupplierForm
+          <AddContactForm
             toggleModal={toggleSupplierModal}
-            addSupplierHandler={addSupplierHandler}
+            addHandler={addSupplierHandler}
           />
         )}
         {
