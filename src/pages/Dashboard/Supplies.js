@@ -6,7 +6,7 @@ import SuppliesList from "../../components/Supplies/SuppliesList";
 import SuppliesForm from "../../components/Supplies/SuppliesForm";
 import { fetchData } from "../../constants/helperFns";
 import AddCategoryForm from "../../components/ModalForms/AddCategoryForm";
-import AddItemForm from "../../components/Supplies/AddItemForm";
+import AddItemForm from "../../components/ModalForms/AddItemForm";
 import AddContactForm from "../../components/ModalForms/AddContactForm";
 import DeleteSupplyForm from "../../components/Supplies/DeleteSupplyForm";
 import EditSupplyForm from "../../components/Supplies/EditSupplyForm";
