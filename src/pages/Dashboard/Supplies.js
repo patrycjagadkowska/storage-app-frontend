@@ -8,7 +8,7 @@ import { fetchData } from "../../constants/helperFns";
 import AddCategoryForm from "../../components/ModalForms/AddCategoryForm";
 import AddItemForm from "../../components/ModalForms/AddItemForm";
 import AddContactForm from "../../components/ModalForms/AddContactForm";
-import DeleteSupplyForm from "../../components/Supplies/DeleteSupplyForm";
+import DeleteForm from "../../components/ModalForms/DeleteForm";
 import EditForm from "../../components/ModalForms/EditForm";
 
 const Supplies = () => {
@@ -307,9 +307,9 @@ const Supplies = () => {
         )}
         {
           showDeleteSupplyModal &&
-          <DeleteSupplyForm
+          <DeleteForm
           toggleModal={toggleDeleteSupplyModal}
-          deleteSupply={deleteSupplyHandler}
+          deleteHandler={deleteSupplyHandler}
           />
         }
         {
@@ -317,7 +317,7 @@ const Supplies = () => {
           <EditForm
           toggleModal={toggleEditSupplyModal}
           contacts={contacts}
-          supply={supplyToBeEditted}
+          prevData={supplyToBeEditted}
           editHandler={editSupplyHandler}
           categories={categories}
           isSupply={true}

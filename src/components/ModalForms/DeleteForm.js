@@ -1,16 +1,16 @@
 import Modal from "../UI/Modal";
 import CustomButton from "../UI/CustomButton";
 
-const DeleteSupplyForm = ({ deleteSupply, toggleModal }) => {
+const DeleteForm = ({ deleteHandler, toggleModal, isSupply }) => {
     return (
         <Modal toggleModal={toggleModal}>
-            <h3>Are you sure you want to delete this supply?</h3>
+            <h3>Are you sure you want to delete this {isSupply ? "supply" : "sale"}?</h3>
             <div>
-                <CustomButton onClick={deleteSupply}>Delete</CustomButton>
+                <CustomButton onClick={deleteHandler}>Delete</CustomButton>
                 <CustomButton onClick={toggleModal}>Go back</CustomButton>
             </div>
         </Modal>
     );
 };
 
-export default DeleteSupplyForm;
+export default DeleteForm;
