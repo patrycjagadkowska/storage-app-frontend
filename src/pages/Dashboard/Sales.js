@@ -1,4 +1,4 @@
-import { useLoaderData, useNavigate } from "react-router";
+import { useLoaderData } from "react-router";
 import { useState, useEffect, useCallback } from "react";
 
 import { fetchData } from "../../constants/helperFns";
@@ -6,6 +6,7 @@ import HeaderWithButtons from "../../components/UI/HeaderWithButons";
 import SalesForm from "../../components/Sales/SalesForm";
 import SalesList from "../../components/Sales/SalesList";
 import AddContactForm from "../../components/ModalForms/AddContactForm";
+import AddCategoryForm from "../../components/ModalForms/AddCategoryForm";
 
 const Sales = () => {
     const [ sales, setSales ] = useState([]);
@@ -15,8 +16,8 @@ const Sales = () => {
     const [ showForm, setShowForm ] = useState(false);
     const [ chosenCategory, setChosenCategory ] = useState(null);
     const [ openCustomerForm, setOpenCustomerForm ] = useState(false);
+    const [ openCategoryForm, setOpenCategoryForm ] = useState(false);
     const loadedData = useLoaderData();
-    const navigate = useNavigate();
 
     useEffect(() => {
         if (!loadedData.sales || !Array.isArray(loadedData.sales) || loadedData.sales.length === 0) {
@@ -91,7 +92,11 @@ const Sales = () => {
           body: JSON.stringify(formValues)
         });
         if (res.status === 200 || res.status === 201) {
-          navigate(0);
+          const customer = await res.json();
+          const copiedContacts = [...contacts];
+          copiedContacts.push(customer.contact);
+          setContacts(copiedContacts);
+          setOpenCustomerForm(false);
         } else {
           console.log(res);
         }
@@ -102,6 +107,37 @@ const Sales = () => {
 
     const toggleCustomerModal = () => {
       setOpenCustomerForm((prevState) => !prevState);
+    };
+
+    const addCategoryHandler = async (formValues) => {
+      const token = localStorage.getItem("token");
+
+      try {
+          const res = await fetch("http://localhost:8080/addCategory", {
+              method: "POST",
+              headers: {
+                  "Content-Type": "application/json",
+                  "Authorization": "Bearer " + token
+              },
+              body: JSON.stringify({categoryName: formValues.name})
+          });
+
+          if (res.status === 200 || res.status === 201) {
+              const category = await res.json();
+              const copiedCategories = [...categories];
+              copiedCategories.push(category.category);
+              setCategories(copiedCategories);
+              setOpenCategoryForm(false);
+          } else {
+            console.log(res);
+          }
+      } catch (error) {
+          console.log(error);
+      }
+  };
+
+    const toggleCategoryModal = () => {
+      setOpenCategoryForm((prevState) => !prevState);
     };
 
     return (
@@ -125,12 +161,19 @@ const Sales = () => {
             getFormValues={getFormValues}
             items={items}
             openCustomerForm={toggleCustomerModal}
+            openCategoryForm={toggleCategoryModal}
           />
         )}
         {openCustomerForm && (
           <AddContactForm
             addHandler={addCustomerHandler}
             toggleModal={toggleCustomerModal}
+          />
+        )}
+        {openCategoryForm && (
+          <AddCategoryForm
+            toggleModal={toggleCategoryModal}
+            addCategoryHandler={addCategoryHandler}
           />
         )}
       </>
