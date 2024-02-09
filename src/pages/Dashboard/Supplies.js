@@ -320,6 +320,7 @@ const Supplies = () => {
           supply={supplyToBeEditted}
           editHandler={editSupplyHandler}
           categories={categories}
+          isSupply={true}
           />
         }
       </>
