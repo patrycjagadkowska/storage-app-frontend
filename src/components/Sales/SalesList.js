@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
+import { RiDeleteBinFill } from "react-icons/ri";
+import { FaEdit } from "react-icons/fa";
 
 import CustomList from "../UI/CustomList";
 import ItemsList from "../UI/ItemsList";
+import CustomButton from "../UI/CustomButton";
 
-
-const SalesList = ({ sales, contacts, categories }) => {
+const SalesList = ({ sales, contacts, categories, openDeleteModal, openEditModal }) => {
     const [ salesList, setSalesList ] = useState([]);
 
     useEffect(() => {
@@ -25,13 +27,15 @@ const SalesList = ({ sales, contacts, categories }) => {
                 };
             });
             return {
-                title: sale.date + " - " + customer,
+                title: <div><span>{sale.date + " - " + customer}</span><div>
+                    <CustomButton onClick={() => openEditModal(sale.id)}><FaEdit /> <span>Edit</span></CustomButton>
+                    <CustomButton onClick={() => openDeleteModal(sale.id)}><RiDeleteBinFill /> <span>Delete</span></CustomButton></div></div>,
                 content: <ItemsList title="Sold items" itemsArray={saleItems} />
             }
         });
 
         setSalesList(mappedSales);
-    }, [sales, categories, contacts]);
+    }, [sales, categories, contacts, openEditModal, openDeleteModal]);
 
     return (
         <CustomList items={salesList} />

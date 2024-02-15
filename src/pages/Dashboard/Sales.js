@@ -1,4 +1,4 @@
-import { useLoaderData } from "react-router";
+import { useLoaderData, useNavigate } from "react-router";
 import { useState, useEffect, useCallback } from "react";
 
 import { fetchData } from "../../constants/helperFns";
@@ -6,6 +6,8 @@ import HeaderWithButtons from "../../components/UI/HeaderWithButons";
 import SalesForm from "../../components/Sales/SalesForm";
 import SalesList from "../../components/Sales/SalesList";
 import AddContactForm from "../../components/ModalForms/AddContactForm";
+import EditForm from "../../components/ModalForms/EditForm";
+import DeleteForm from "../../components/ModalForms/DeleteForm";
 
 const Sales = () => {
     const [ sales, setSales ] = useState([]);
@@ -14,8 +16,12 @@ const Sales = () => {
     const [ items, setItems ] = useState([]);
     const [ showForm, setShowForm ] = useState(false);
     const [ chosenCategory, setChosenCategory ] = useState(null);
+    const [ chosenSale, setChosenSale ] = useState(null);
     const [ openCustomerForm, setOpenCustomerForm ] = useState(false);
+    const [ openDeleteModal, setOpenDeleteModal ] = useState(false);
+    const [ openEditModal, setOpenEditModal ] = useState(false);
     const loadedData = useLoaderData();
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (!loadedData.sales || !Array.isArray(loadedData.sales) || loadedData.sales.length === 0) {
@@ -107,6 +113,64 @@ const Sales = () => {
       setOpenCustomerForm((prevState) => !prevState);
     };
 
+    const editSaleHandler = async (formValues) => {
+      const token = localStorage.getItem("token");
+      const { date, customer } = formValues;
+
+      const customerId = contacts.find((c) => c.name === customer).id;
+      try {
+        const res = await fetch("http://localhost:8080/sales/" + chosenSale, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + token
+          },
+          body: JSON.stringify({ date, customerId })
+        });
+
+        if (res.status === 200 || res.status === 201) {
+          navigate(0);
+        } else {
+          console.log(res);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    const toggleEditModal = (saleId) => {
+      setChosenSale(saleId);
+      setOpenEditModal((prevState) => !prevState);
+    };
+
+    const deleteSaleHandler = async () => {
+        const token = localStorage.getItem("token");
+
+        try {
+          const res = await fetch("http://localhost:8080/deleteSale/" + chosenSale, {
+            method: "POST",
+            headers: {
+              "Authorization": "Bearer " + token
+            }
+          });
+
+          if (res.status === 200 || res.status === 201) {
+            navigate(0)
+          } else {
+            console.log(res);
+          }
+        } catch (error) {
+           console.log(error);
+        }
+    };
+
+    const toggleDeleteModal = (saleId) => {
+      setChosenSale(saleId);
+      setOpenDeleteModal((prevState) => !prevState);
+    };
+
+    const saleToBeEditted = sales.find((s) => s.id === chosenSale);
+
     return (
       <>
         <HeaderWithButtons
@@ -119,6 +183,8 @@ const Sales = () => {
             sales={sales}
             contacts={contacts}
             categories={categories}
+            openDeleteModal={toggleDeleteModal}
+            openEditModal={toggleEditModal}
           />
         )}
         {showForm && (
@@ -134,6 +200,22 @@ const Sales = () => {
           <AddContactForm
             addHandler={addCustomerHandler}
             toggleModal={toggleCustomerModal}
+          />
+        )}
+        {openEditModal && (
+          <EditForm
+            isSupply={false}
+            prevData={saleToBeEditted}
+            toggleModal={toggleEditModal}
+            editHandler={editSaleHandler}
+            contacts={contacts}
+          />
+        )}
+        {openDeleteModal && (
+          <DeleteForm
+            deleteHandler={deleteSaleHandler}
+            toggleModal={toggleDeleteModal}
+            isSupply={false}
           />
         )}
       </>
