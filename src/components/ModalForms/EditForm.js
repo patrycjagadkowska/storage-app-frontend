@@ -17,9 +17,9 @@ const EditForm = ({ prevData, toggleModal, editHandler, contacts, isSupply }) =>
             type: "date"
         }, 
         {
-            label: "Supplier",
-            name: "supplier",
-            id: "supplier",
+            label: isSupply ? "Supplier" : "Customer",
+            name: isSupply ? "supplier" : "customer",
+            id: isSupply ? "supplier" : "customer",
             initialValue: contactName,
             placeholder: contactName,
             validationFn: validateSelect,
