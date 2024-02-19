@@ -13,6 +13,7 @@ import Settings, { loader as settingsLoader } from "./pages/Dashboard/Settings";
 import Contacts, { loader as contactsLoader } from "./pages/Dashboard/Contacts";
 import Supplies, { loader as suppliesLoader } from "./pages/Dashboard/Supplies";
 import Sales, { loader as salesLoader } from "./pages/Dashboard/Sales";
+import Stock, { loader as stockLoader } from "./pages/Dashboard/Stock";
 
 function App() {
   const router = createBrowserRouter([
@@ -68,6 +69,11 @@ function App() {
           path: "sales",
           element: <Sales />,
           loader: salesLoader
+        },
+        {
+          path: "stock",
+          element: <Stock />,
+          loader: stockLoader
         }
       ]
     }
