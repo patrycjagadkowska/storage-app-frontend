@@ -6,8 +6,6 @@ import { validateSelect } from "../../constants/validationFns";
 const StockList = ({ categories, items, onChangeHandler, onErrorHandler }) => {
     const [ records, setRecords ] = useState([]);
 
-    console.log(items);
-
     useEffect(() => {
         if (items && Array.isArray(items)) {
             const mappedItems = items.map((i, index) => {
