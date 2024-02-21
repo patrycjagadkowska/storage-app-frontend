@@ -129,3 +129,11 @@ export const validatePrice = (value) => {
     return null;
   }
 };
+
+export const validateInventoryQuantity = (value) => {
+  if (parseInt(value) < 0) {
+    return "Please enter a valid quantity (at least 0).";
+  } else {
+    return null;
+  }
+};
