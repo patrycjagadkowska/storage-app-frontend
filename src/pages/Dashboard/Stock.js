@@ -62,6 +62,17 @@ const Stock = () => {
     const onFilterChangeHandler = useCallback(({ name, value }) => {
         if (name === "category") {
             setChosenCategory(value);
+        } else if (name === "itemName" && value.length > 0) {
+            setItems((prevItems) => {
+                const filteredItems =
+                  prevItems &&
+                  prevItems.filter((i) =>
+                    i.name.toLowerCase().includes(value.toLowerCase())
+                  );
+                return filteredItems;
+            });
+        } else if (name === "itemName" && value === "") {
+            setItems(loadedData.items);
         }
     }, []);
 

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
 import FilterForm from "../UI/FilterForm";
-import { validateSelect } from "../../constants/validationFns";
+import { validateName, validateSelect } from "../../constants/validationFns";
 import StockTable from "./StockTable";
 
 const StockList = ({ categories, items, onChangeHandler, onErrorHandler }) => {
@@ -36,7 +36,16 @@ const StockList = ({ categories, items, onChangeHandler, onErrorHandler }) => {
             id: "category",
             initialValue: "",
             validationFn: { validationFn: validateSelect, data: categoriesOptions},
+            type: "select",
             options: categoriesOptions
+        },
+        {
+          name: "itemName",
+          label: "Item",
+          id: "itemName",
+          initialValue: "",
+          validationFn: { validationFn: validateName },
+          type: "text"
         }
     ];
 

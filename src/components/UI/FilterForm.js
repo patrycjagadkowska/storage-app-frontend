@@ -7,7 +7,7 @@ const FilterForm = ({ filters, onChange, onError }) => {
             label={f.label}
             name={f.name}
             id={f.id}
-            type="select"
+            type={f.type}
             initialValue={f.initialValue}
             options={f.options}
             validationFn={f.validationFn}
