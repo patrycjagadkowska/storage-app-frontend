@@ -1,9 +1,10 @@
-import { useLoaderData } from "react-router";
+import { useLoaderData, useNavigate } from "react-router";
 import { useState, useEffect, useCallback } from "react";
 
 import { fetchData } from "../../constants/helperFns";
 import HeaderWithButtons from "../../components/UI/HeaderWithButons";
 import StockList from "../../components/Stock/StockList";
+import InventoryForm from "../../components/Stock/InventoryForm";
 
 const Stock = () => {
     const [ showForm, setShowForm ] = useState(false);
@@ -11,6 +12,7 @@ const Stock = () => {
     const [ items, setItems ] = useState();
     const [ chosenCategory, setChosenCategory ] = useState(null);
     const loadedData = useLoaderData();
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (loadedData && loadedData.categories && Array.isArray(loadedData.categories)) {
@@ -67,6 +69,27 @@ const Stock = () => {
 
     }, []);
 
+    const submitHandler = async (formValues) => {
+        const token = localStorage.getItem("token");
+
+        try {
+            const res = await fetch("http://localhost:8080/addInventory", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + token
+                },
+                body: JSON.stringify({formValues})
+            });
+
+            if (res.status === 200 || res.status === 201) {
+                navigate(0);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     return (
       <>
         <HeaderWithButtons
@@ -80,6 +103,13 @@ const Stock = () => {
             items={items}
             categories={categories}
             onErrorHandler={onErrorHandler}
+          />
+        )}
+        {showForm && (
+          <InventoryForm
+            categories={categories}
+            items={items}
+            onSubmit={submitHandler}
           />
         )}
       </>
