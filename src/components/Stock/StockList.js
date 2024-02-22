@@ -2,23 +2,30 @@ import { useState, useEffect } from "react";
 
 import FilterForm from "../UI/FilterForm";
 import { validateSelect } from "../../constants/validationFns";
+import StockTable from "./StockTable";
 
 const StockList = ({ categories, items, onChangeHandler, onErrorHandler }) => {
-    const [ records, setRecords ] = useState([]);
+    const [ categoriesTables, setCategoriesTables ] = useState([]);
 
     useEffect(() => {
-        if (items && Array.isArray(items)) {
-            const mappedItems = items.map((i, index) => {
-                return <tr key={`${i.name}/${index}`}>
-                    <td>{i.name}</td>
-                    <td>{i.quantity}</td>
-                </tr>
-            });
-            setRecords(mappedItems);
-        } else {
-            setRecords([]);
+        if (
+          !categories ||
+          !items ||
+          !Array.isArray(categories) ||
+          !Array.isArray(items) ||
+          categories.length === 0 ||
+          items.length === 0
+        ) {
+          setCategoriesTables([]);
+          return;
         }
-    }, [items])
+
+        const mappedCategories = categories.map((c) => {
+            const categoryItems = items.filter((i) => i.CategoryId === c.id);
+            return <StockTable categoryName={c.name} items={categoryItems} />
+        });
+        setCategoriesTables(mappedCategories);
+    }, [categories, items]);
 
     const categoriesOptions = (categories && categories.map((c) => c.name)) || [];
 
@@ -41,18 +48,7 @@ const StockList = ({ categories, items, onChangeHandler, onErrorHandler }) => {
           onError={onErrorHandler}
         />
         <h3>Your stock</h3>
-        <table>
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Quantity</th>
-                </tr>
-            </thead>
-            <tbody>
-                { records }
-            </tbody>
-        </table>
-        {records.length === 0 && <p>No records found.</p>}
+        {categoriesTables}
       </>
     );
 };
