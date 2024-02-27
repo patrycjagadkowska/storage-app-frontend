@@ -74,7 +74,7 @@ const Stock = () => {
         } else if (name === "itemName" && value === "") {
             setItems(loadedData.items);
         }
-    }, []);
+    }, [loadedData.items]);
 
     const onErrorHandler = useCallback(({ name, value }) => {
 
