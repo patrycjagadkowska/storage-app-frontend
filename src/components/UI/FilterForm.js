@@ -1,5 +1,7 @@
 import CustomInput from "./CustomInput";
 
+import classes from "./styles/FilterForm.module.css";
+
 const FilterForm = ({ filters, onChange, onError }) => {
     const inputs = filters.map((f, index) => {
         return (
@@ -19,9 +21,9 @@ const FilterForm = ({ filters, onChange, onError }) => {
     });
 
     return (
-        <div>
+        <div className={classes["form-container"]}>
             <h3>Filter your data</h3>
-            <form>
+            <form className={classes.form}>
                 { inputs }
             </form>
         </div>
