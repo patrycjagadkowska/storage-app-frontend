@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 
+import classes from "./Stock.module.css";
+
 const StockTable = ({ items, categoryName }) => {
     const [ records, setRecords ] = useState([]);
 
@@ -19,21 +21,21 @@ const StockTable = ({ items, categoryName }) => {
     }, [items]);
 
     return (
-        <>
-            <h4>{categoryName}</h4>
-            <table>
+      <div className={classes.category}>
+        <h4>{categoryName}</h4>
+        {records.length > 0 && (
+          <table className={classes.table}>
             <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Quantity</th>
-                </tr>
+              <tr>
+                <th>Name</th>
+                <th>Quantity</th>
+              </tr>
             </thead>
-            <tbody>
-                { records }
-            </tbody>
-        </table>
+            <tbody>{records}</tbody>
+          </table>
+        )}
         {records.length === 0 && <p>No records found.</p>}
-        </>
+      </div>
     );
 };
 
