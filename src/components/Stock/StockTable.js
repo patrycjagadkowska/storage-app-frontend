@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 import { FaEdit } from "react-icons/fa";
+import { RiDeleteBinFill } from "react-icons/ri";
 
 import CustomButton from "../UI/CustomButton";
 
 import classes from "./Stock.module.css";
 
-const StockTable = ({ items, categoryName, openEditItemModal }) => {
+const StockTable = ({ items, categoryName, openEditItemModal, openDeleteItemModal }) => {
     const [ records, setRecords ] = useState([]);
 
     useEffect(() => {
@@ -15,12 +16,33 @@ const StockTable = ({ items, categoryName, openEditItemModal }) => {
         }
 
         const mappedRecords = items.map((i) => {
-            return <tr>
+            return (
+              <tr>
                 <td>{i.name}</td>
                 <td>{i.quantity}</td>
                 <td>{i.salePrice}</td>
-                <td><CustomButton onClick={() => {openEditItemModal(i.id)}} className={classes["edit-btn"]}><FaEdit /></CustomButton></td>
-            </tr>
+                <td>
+                  <div className={classes["btn-cell"]}>
+                    <CustomButton
+                      onClick={() => {
+                        openEditItemModal(i.id);
+                      }}
+                      className={classes["edit-btn"]}
+                    >
+                      <FaEdit />
+                    </CustomButton>{" "}
+                    <CustomButton
+                      onClick={() => {
+                        openDeleteItemModal(i.id);
+                      }}
+                      className={classes["edit-btn"]}
+                    >
+                      <RiDeleteBinFill />
+                    </CustomButton>
+                  </div>
+                </td>
+              </tr>
+            );
         });
         setRecords(mappedRecords);
     }, [items, openEditItemModal]);

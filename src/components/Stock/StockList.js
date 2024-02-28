@@ -12,6 +12,7 @@ const StockList = ({
   onChangeHandler,
   onErrorHandler,
   openEditItemModal,
+  openDeleteItemModal
 }) => {
   const [categoriesTables, setCategoriesTables] = useState([]);
 
@@ -35,11 +36,12 @@ const StockList = ({
           categoryName={c.name}
           items={categoryItems}
           openEditItemModal={openEditItemModal}
+          openDeleteItemModal={openDeleteItemModal}
         />
       );
     });
     setCategoriesTables(mappedCategories);
-  }, [categories, items, openEditItemModal]);
+  }, [categories, items, openEditItemModal, openDeleteItemModal]);
 
   const categoriesOptions = (categories && categories.map((c) => c.name)) || [];
 

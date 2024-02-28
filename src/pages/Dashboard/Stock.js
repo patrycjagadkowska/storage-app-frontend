@@ -6,6 +6,7 @@ import HeaderWithButtons from "../../components/UI/HeaderWithButons";
 import StockList from "../../components/Stock/StockList";
 import InventoryForm from "../../components/Stock/InventoryForm";
 import EditItemForm from "../../components/ModalForms/EditItemForm";
+import DeleteForm from "../../components/ModalForms/DeleteForm";
 
 const Stock = () => {
     const [ showForm, setShowForm ] = useState(false);
@@ -14,6 +15,7 @@ const Stock = () => {
     const [ chosenCategory, setChosenCategory ] = useState(null);
     const [ chosenItem, setChosenItem ] = useState(null);
     const [ openEditItemModal, setOpenEditItemModal ] = useState(false);
+    const [ openDeleteItemModal, setOpenDeleteItemModal ] = useState(false);
     const loadedData = useLoaderData();
     const navigate = useNavigate();
 
@@ -113,7 +115,16 @@ const Stock = () => {
     const openEditItemModalHandler = (itemId) => {
         setChosenItem(itemId);
         setOpenEditItemModal(true);
-    }
+    };
+
+    const toggleDeleteItemModal = () => {
+        setOpenDeleteItemModal((prevState) => !prevState);
+    };
+
+    const openDeleteItemModalHandler = (itemId) => {
+        setChosenItem(itemId);
+        setOpenDeleteItemModal(true);
+    };
 
     const editItemHandler = async (formData) => {
         const token = localStorage.getItem("token");
@@ -141,6 +152,26 @@ const Stock = () => {
             console.log(error);
         }
     };
+
+    const deleteItemHandler = async () => {
+        const token = localStorage.getItem("token");
+
+        try {
+            const res = await fetch("http://localhost:8080/deleteItem/" + chosenItem, {
+                method: "POST",
+                headers: {
+                    "Authorization": "Bearer " + token
+                }
+            });
+
+            if (res.status === 200 || res.status === 201) {
+                navigate(0);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     return (
       <>
         <HeaderWithButtons
@@ -155,6 +186,7 @@ const Stock = () => {
             categories={categories}
             onErrorHandler={onErrorHandler}
             openEditItemModal={openEditItemModalHandler}
+            openDeleteItemModal={openDeleteItemModalHandler}
           />
         )}
         {showForm && (
@@ -169,6 +201,13 @@ const Stock = () => {
             toggleModal={toggleEditItemModal}
             editHandler={editItemHandler}
             prevData={chosenItemPrevData}
+          />
+        )}
+        {!showForm && openDeleteItemModal && (
+          <DeleteForm
+            deleteItemName="item"
+            toggleModal={toggleDeleteItemModal}
+            deleteHandler={deleteItemHandler}
           />
         )}
       </>

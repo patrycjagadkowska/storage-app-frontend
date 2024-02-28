@@ -52,6 +52,14 @@ h3.title {
     color: inherit;
 }
 
+.btn-cell {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    align-items: center;
+}
+
 .edit-btn {
     padding: 0.25rem;
     margin: 0;
@@ -60,4 +68,8 @@ h3.title {
 .edit-btn svg {
     height: 1rem;
     width: 1rem;
+}
+
+.edit-btn:nth-child(2) {
+    margin-left: 0.5rem;
 }
