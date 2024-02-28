@@ -12,10 +12,12 @@ const Stock = () => {
     const [ showForm, setShowForm ] = useState(false);
     const [ categories, setCategories ] = useState();
     const [ items, setItems ] = useState();
-    const [ chosenCategory, setChosenCategory ] = useState(null);
-    const [ chosenItem, setChosenItem ] = useState(null);
+    const [ chosenFilterCategory, setChosenFilterCategory ] = useState(null);
+    const [ chosenDeleteItem, setChosenDeleteItem ] = useState(null);
+    const [ chosenDeleteCategory, setChosenDeleteCategory ] = useState(null);
     const [ openEditItemModal, setOpenEditItemModal ] = useState(false);
     const [ openDeleteItemModal, setOpenDeleteItemModal ] = useState(false);
+    const [ openDeleteCategoryModal, setOpenDeleteCategoryModal ] = useState(false);
     const loadedData = useLoaderData();
     const navigate = useNavigate();
 
@@ -32,7 +34,7 @@ const Stock = () => {
     useEffect(() => {
         const category =
           (categories &&
-            categories.find((c) => c.name === chosenCategory)) ||
+            categories.find((c) => c.name === chosenFilterCategory)) ||
           null;
         const token = localStorage.getItem("token");
         const fetchCategoryItems = async () => {
@@ -52,7 +54,7 @@ const Stock = () => {
         if (category && category.id) {
             fetchCategoryItems();
         }
-    }, [chosenCategory, categories]);
+    }, [chosenFilterCategory, categories]);
 
     const listButton = {
         handler: () => {setShowForm(false)},
@@ -66,7 +68,7 @@ const Stock = () => {
 
     const onFilterChangeHandler = useCallback(({ name, value }) => {
         if (name === "category") {
-            setChosenCategory(value);
+            setChosenFilterCategory(value);
         } else if (name === "itemName" && value.length > 0) {
             setItems((prevItems) => {
                 const filteredItems =
@@ -106,14 +108,15 @@ const Stock = () => {
         }
     };
 
-    const chosenItemPrevData = (chosenItem && items) && items.find((i) => i.id === chosenItem);
+    const chosenItemPrevData =
+      chosenDeleteItem && items && items.find((i) => i.id === chosenDeleteItem);
 
     const toggleEditItemModal = () => {
         setOpenEditItemModal((prevState) => !prevState);
     };
 
     const openEditItemModalHandler = (itemId) => {
-        setChosenItem(itemId);
+        setChosenDeleteItem(itemId);
         setOpenEditItemModal(true);
     };
 
@@ -122,8 +125,17 @@ const Stock = () => {
     };
 
     const openDeleteItemModalHandler = (itemId) => {
-        setChosenItem(itemId);
+        setChosenDeleteItem(itemId);
         setOpenDeleteItemModal(true);
+    };
+
+    const toggleDeleteCategoryModal = () => {
+        setOpenDeleteCategoryModal((prevState) => !prevState);
+    };
+
+    const openDeleteCategoryModalHandler = (categoryId) => {
+        setChosenDeleteCategory(categoryId);
+        setOpenDeleteCategoryModal(true);
     };
 
     const editItemHandler = async (formData) => {
@@ -134,7 +146,7 @@ const Stock = () => {
         const categoryId = chosenItemPrevData.CategoryId;
         
         try {
-            const res = await fetch("http://localhost:8080/editItem/" + chosenItem, {
+            const res = await fetch("http://localhost:8080/editItem/" + chosenDeleteItem, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -157,7 +169,7 @@ const Stock = () => {
         const token = localStorage.getItem("token");
 
         try {
-            const res = await fetch("http://localhost:8080/deleteItem/" + chosenItem, {
+            const res = await fetch("http://localhost:8080/deleteItem/" + chosenDeleteItem, {
                 method: "POST",
                 headers: {
                     "Authorization": "Bearer " + token
@@ -166,6 +178,27 @@ const Stock = () => {
 
             if (res.status === 200 || res.status === 201) {
                 navigate(0);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const deleteCategoryHandler = async () => {
+        const token = localStorage.getItem("token");
+
+        try {
+            const res = await fetch("http://localhost:8080/deleteCategory/" + chosenDeleteCategory, {
+                method: "POST",
+                headers: {
+                    "Authorization": "Bearer " + token
+                }
+            });
+
+            if (res.status === 200 || res.status === 201) {
+                navigate(0);
+            } else {
+                console.log(res);
             }
         } catch (error) {
             console.log(error);
@@ -187,6 +220,7 @@ const Stock = () => {
             onErrorHandler={onErrorHandler}
             openEditItemModal={openEditItemModalHandler}
             openDeleteItemModal={openDeleteItemModalHandler}
+            openDeleteCategoryModal={openDeleteCategoryModalHandler}
           />
         )}
         {showForm && (
@@ -208,6 +242,13 @@ const Stock = () => {
             deleteItemName="item"
             toggleModal={toggleDeleteItemModal}
             deleteHandler={deleteItemHandler}
+          />
+        )}
+        {!showForm && openDeleteCategoryModal && (
+          <DeleteForm
+            deleteItemName="category"
+            toggleModal={toggleDeleteCategoryModal}
+            deleteHandler={deleteCategoryHandler}
           />
         )}
       </>
