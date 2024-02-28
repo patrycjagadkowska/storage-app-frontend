@@ -4,6 +4,8 @@ import FilterForm from "../UI/FilterForm";
 import { validateName, validateSelect } from "../../constants/validationFns";
 import StockTable from "./StockTable";
 
+import classes from "./Stock.module.css";
+
 const StockList = ({ categories, items, onChangeHandler, onErrorHandler }) => {
     const [ categoriesTables, setCategoriesTables ] = useState([]);
 
@@ -56,7 +58,7 @@ const StockList = ({ categories, items, onChangeHandler, onErrorHandler }) => {
           onChange={onChangeHandler}
           onError={onErrorHandler}
         />
-        <h3>Your stock</h3>
+        <h3 className={classes.title}>Your stock</h3>
         {categoriesTables}
       </>
     );
