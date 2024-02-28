@@ -215,7 +215,7 @@ const Sales = () => {
           <DeleteForm
             deleteHandler={deleteSaleHandler}
             toggleModal={toggleDeleteModal}
-            isSupply={false}
+            deleteItemName="sale"
           />
         )}
       </>

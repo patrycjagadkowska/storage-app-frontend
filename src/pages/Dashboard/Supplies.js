@@ -310,6 +310,7 @@ const Supplies = () => {
           <DeleteForm
           toggleModal={toggleDeleteSupplyModal}
           deleteHandler={deleteSupplyHandler}
+          deleteItemName="supply"
           />
         }
         {
