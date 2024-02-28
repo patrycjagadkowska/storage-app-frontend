@@ -5,12 +5,15 @@ import { fetchData } from "../../constants/helperFns";
 import HeaderWithButtons from "../../components/UI/HeaderWithButons";
 import StockList from "../../components/Stock/StockList";
 import InventoryForm from "../../components/Stock/InventoryForm";
+import EditItemForm from "../../components/ModalForms/EditItemForm";
 
 const Stock = () => {
     const [ showForm, setShowForm ] = useState(false);
     const [ categories, setCategories ] = useState();
     const [ items, setItems ] = useState();
     const [ chosenCategory, setChosenCategory ] = useState(null);
+    const [ chosenItem, setChosenItem ] = useState(null);
+    const [ openEditItemModal, setOpenEditItemModal ] = useState(false);
     const loadedData = useLoaderData();
     const navigate = useNavigate();
 
@@ -101,6 +104,43 @@ const Stock = () => {
         }
     };
 
+    const chosenItemPrevData = (chosenItem && items) && items.find((i) => i.id === chosenItem);
+
+    const toggleEditItemModal = () => {
+        setOpenEditItemModal((prevState) => !prevState);
+    };
+
+    const openEditItemModalHandler = (itemId) => {
+        setChosenItem(itemId);
+        setOpenEditItemModal(true);
+    }
+
+    const editItemHandler = async (formData) => {
+        const token = localStorage.getItem("token");
+        const name = formData.name || chosenItemPrevData.name;
+        const salePrice = formData.salePrice || chosenItemPrevData.salePrice;
+        const quantity = formData.quantity || chosenItemPrevData.quantity;
+        const categoryId = chosenItemPrevData.CategoryId;
+        
+        try {
+            const res = await fetch("http://localhost:8080/editItem/" + chosenItem, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + token
+                },
+                body: JSON.stringify({ name, quantity, salePrice, categoryId })
+            });
+
+            if (res.status === 200 || res.status === 201) {
+                navigate(0);
+            } else {
+                console.log(res);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
     return (
       <>
         <HeaderWithButtons
@@ -114,6 +154,7 @@ const Stock = () => {
             items={items}
             categories={categories}
             onErrorHandler={onErrorHandler}
+            openEditItemModal={openEditItemModalHandler}
           />
         )}
         {showForm && (
@@ -121,6 +162,13 @@ const Stock = () => {
             categories={categories}
             items={items}
             onSubmit={submitHandler}
+          />
+        )}
+        {!showForm && openEditItemModal && (
+          <EditItemForm
+            toggleModal={toggleEditItemModal}
+            editHandler={editItemHandler}
+            prevData={chosenItemPrevData}
           />
         )}
       </>

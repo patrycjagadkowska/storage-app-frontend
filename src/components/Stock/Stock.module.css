@@ -51,3 +51,13 @@ h3.title {
     background-color: #a47c64;
     color: inherit;
 }
+
+.edit-btn {
+    padding: 0.25rem;
+    margin: 0;
+}
+
+.edit-btn svg {
+    height: 1rem;
+    width: 1rem;
+}
