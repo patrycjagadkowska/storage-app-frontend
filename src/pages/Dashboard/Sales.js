@@ -24,23 +24,16 @@ const Sales = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (!loadedData.sales || !Array.isArray(loadedData.sales) || loadedData.sales.length === 0) {
+        if (!loadedData || !Array.isArray(loadedData) || loadedData.length !== 3) {
           setSales([]);
-        } else {
-          setSales(loadedData.sales);
-        }
-
-        if (!loadedData.categories || !Array.isArray(loadedData.categories) || loadedData.categories.length === 0) {
           setCategories([]);
-        } else {
-          setCategories(loadedData.categories);
+          setContacts([]);
+          return;
         }
 
-        if (!loadedData.contacts || !Array.isArray(loadedData.contacts) || loadedData.contacts.length === 0) {
-          setContacts([]);
-        } else {
-          setContacts(loadedData.contacts);
-        }
+        setContacts(loadedData[0].data);
+        setSales(loadedData[1].data);
+        setCategories(loadedData[2].data);
     }, [loadedData]);
 
     const getFormValues = useCallback((formValues) => {
@@ -230,19 +223,12 @@ export const loader = async () => {
     const contactsUrl = "http://localhost:8080/contacts";
     const salesUrl = "http://localhost:8080/sales";
     const categoriesUrl = "http://localhost:8080/categories";
-    try {
+
       const allData = await Promise.all([
         fetchData(token, contactsUrl),
         fetchData(token, salesUrl),
         fetchData(token, categoriesUrl)
       ]);
 
-      return {
-        contacts: allData[0].data,
-        sales: allData[1].data,
-        categories: allData[2].data
-      };
-    } catch (error) {
-      console.log(error);
-    }
+      return allData;
 };
