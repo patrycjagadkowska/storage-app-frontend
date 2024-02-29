@@ -89,7 +89,7 @@ const editCategoryHandler = (event) => {
       <div className={classes["category__header"]}>
         {!editMode && <h4>{categoryName}</h4>}
         {editMode && (
-          <>
+          <div className={classes["category__header--edit"]}>
             <CustomInput
               name="name"
               label="Category name"
@@ -104,7 +104,6 @@ const editCategoryHandler = (event) => {
             <CustomButton
               type="submit"
               onClick={editCategoryHandler}
-              className={classes["edit-btn"]}
             >
               Save change
             </CustomButton>
@@ -113,11 +112,10 @@ const editCategoryHandler = (event) => {
               onClick={() => {
                 setEditMode(false);
               }}
-              className={classes["edit-btn"]}
             >
-              X
+              Cancel
             </CustomButton>
-          </>
+          </div>
         )}
         <div className={classes["category__header--buttons"]}>
           <CustomButton

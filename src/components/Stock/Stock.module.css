@@ -31,6 +31,19 @@ h3.title {
     color: #a47c64;
 }
 
+.category__header--edit {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    width: fit-content;
+    align-items: center;
+}
+
+.category__header--edit button {
+    margin: 0 0.25rem;
+}
+
 .table {
     width: calc(100% - 2rem);
     text-align: left;
