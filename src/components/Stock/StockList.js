@@ -41,8 +41,6 @@ const StockList = ({
       categoriesToMap = categories;
     }
 
-    console.log(categoriesToMap);
-
     const mappedCategories = categoriesToMap.map((c) => {
       const categoryItems = items.filter((i) => i.CategoryId === c.id);
       return (
