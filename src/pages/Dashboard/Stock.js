@@ -15,6 +15,7 @@ const Stock = () => {
     const [ chosenFilterCategory, setChosenFilterCategory ] = useState(null);
     const [ chosenDeleteItem, setChosenDeleteItem ] = useState(null);
     const [ chosenDeleteCategory, setChosenDeleteCategory ] = useState(null);
+    const [ chosenEditCategory, setChosenEditCategory ] = useState(null);
     const [ openEditItemModal, setOpenEditItemModal ] = useState(false);
     const [ openDeleteItemModal, setOpenDeleteItemModal ] = useState(false);
     const [ openDeleteCategoryModal, setOpenDeleteCategoryModal ] = useState(false);
@@ -205,6 +206,33 @@ const Stock = () => {
         }
     };
 
+    const setCategoryToBeEditted = (categoryId) => {
+        setChosenEditCategory(categoryId);
+    };
+
+    const editCategoryHandler = async (newName) => {
+        const token = localStorage.getItem("token");
+
+        try {
+            const res = await fetch("http://localhost:8080/editCategory/" + chosenEditCategory, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + token
+                },
+                body: JSON.stringify({ categoryName: newName })
+            });
+
+            if (res.status === 200 || res.status === 201) {
+                navigate(0);
+            } else {
+                console.log(res);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     return (
       <>
         <HeaderWithButtons
@@ -221,6 +249,8 @@ const Stock = () => {
             openEditItemModal={openEditItemModalHandler}
             openDeleteItemModal={openDeleteItemModalHandler}
             openDeleteCategoryModal={openDeleteCategoryModalHandler}
+            editCategoryHandler={editCategoryHandler}
+            setCategoryToBeEditted={setCategoryToBeEditted}
           />
         )}
         {showForm && (

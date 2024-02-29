@@ -13,7 +13,9 @@ const StockList = ({
   onErrorHandler,
   openEditItemModal,
   openDeleteItemModal,
-  openDeleteCategoryModal
+  openDeleteCategoryModal,
+  editCategoryHandler,
+  setCategoryToBeEditted
 }) => {
   const [categoriesTables, setCategoriesTables] = useState([]);
 
@@ -40,11 +42,21 @@ const StockList = ({
           openEditItemModal={openEditItemModal}
           openDeleteItemModal={openDeleteItemModal}
           openDeleteCategoryModal={openDeleteCategoryModal}
+          editCategory={editCategoryHandler}
+          setCategoryToBeEditted={setCategoryToBeEditted}
         />
       );
     });
     setCategoriesTables(mappedCategories);
-  }, [categories, items, openEditItemModal, openDeleteItemModal, openDeleteCategoryModal]);
+  }, [
+    categories,
+    items,
+    openEditItemModal,
+    openDeleteItemModal,
+    openDeleteCategoryModal,
+    editCategoryHandler,
+    setCategoryToBeEditted
+  ]);
 
   const categoriesOptions = (categories && categories.map((c) => c.name)) || [];
 
