@@ -23,13 +23,14 @@ const Stock = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (loadedData && loadedData.categories && Array.isArray(loadedData.categories)) {
-            setCategories(loadedData.categories);
-        } 
-
-        if (loadedData && loadedData.items && Array.isArray(loadedData.items)) {
-            setItems(loadedData.items);
+        if (!loadedData || !Array.isArray(loadedData) || loadedData.length !== 2) {
+            setCategories([]);
+            setItems([]);
+            return;
         }
+
+        setCategories(loadedData[0].data);
+        setItems(loadedData[1].data);
     }, [loadedData]);
 
     useEffect(() => {
@@ -292,17 +293,10 @@ export const loader = async () => {
     const categoriesUrl = "http://localhost:8080/categories";
     const itemsUrl = "http://localhost:8080/categories/items";
 
-    try {
-        const allData = await Promise.all([
-            fetchData(token, categoriesUrl),
-            fetchData(token, itemsUrl)
-        ]);
+    const allData = await Promise.all([
+      fetchData(token, categoriesUrl),
+      fetchData(token, itemsUrl),
+    ]);
 
-        return {
-            categories: allData[0].data,
-            items: allData[1].data
-        };
-    } catch (error) {
-        console.log(error);
-    }
+    return allData;
 };
