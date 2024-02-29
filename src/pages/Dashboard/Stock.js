@@ -33,31 +33,6 @@ const Stock = () => {
         setItems(loadedData[1].data);
     }, [loadedData]);
 
-    useEffect(() => {
-        const category =
-          (categories &&
-            categories.find((c) => c.name === chosenFilterCategory)) ||
-          null;
-        const token = localStorage.getItem("token");
-        const fetchCategoryItems = async () => {
-            const res = await fetch("http://localhost:8080/categories/" + category.id, {
-                method: "GET",
-                headers: {
-                    "Authorization": "Bearer " + token
-                }
-            });
-
-            if (res.status === 200) {
-                const items = await res.json();
-                setItems(items.data);
-            }
-        };
-
-        if (category && category.id) {
-            fetchCategoryItems();
-        }
-    }, [chosenFilterCategory, categories]);
-
     const listButton = {
         handler: () => {setShowForm(false)},
         text: "Show all stock"
@@ -69,8 +44,10 @@ const Stock = () => {
     };
 
     const onFilterChangeHandler = useCallback(({ name, value }) => {
-        if (name === "category") {
+        if (name === "category" && value.length > 0) {
             setChosenFilterCategory(value);
+        } else if (name === "category" && value === "") {
+            setChosenFilterCategory(null);
         } else if (name === "itemName" && value.length > 0) {
             setItems((prevItems) => {
                 const filteredItems =
@@ -81,9 +58,9 @@ const Stock = () => {
                 return filteredItems;
             });
         } else if (name === "itemName" && value === "") {
-            setItems(loadedData.items);
+            setItems(loadedData[1].data);
         }
-    }, [loadedData.items]);
+    }, [loadedData]);
 
     const onErrorHandler = useCallback(({ name, value }) => {
 
@@ -246,6 +223,7 @@ const Stock = () => {
             onChangeHandler={onFilterChangeHandler}
             items={items}
             categories={categories}
+            chosenFilterCategory={chosenFilterCategory}
             onErrorHandler={onErrorHandler}
             openEditItemModal={openEditItemModalHandler}
             openDeleteItemModal={openDeleteItemModalHandler}

@@ -15,7 +15,8 @@ const StockList = ({
   openDeleteItemModal,
   openDeleteCategoryModal,
   editCategoryHandler,
-  setCategoryToBeEditted
+  setCategoryToBeEditted,
+  chosenFilterCategory
 }) => {
   const [categoriesTables, setCategoriesTables] = useState([]);
 
@@ -32,7 +33,17 @@ const StockList = ({
       return;
     }
 
-    const mappedCategories = categories.map((c) => {
+    let categoriesToMap;
+
+    if (chosenFilterCategory) {
+      categoriesToMap = [categories.find((c) => c.name === chosenFilterCategory)];
+    } else {
+      categoriesToMap = categories;
+    }
+
+    console.log(categoriesToMap);
+
+    const mappedCategories = categoriesToMap.map((c) => {
       const categoryItems = items.filter((i) => i.CategoryId === c.id);
       return (
         <StockTable
@@ -55,10 +66,15 @@ const StockList = ({
     openDeleteItemModal,
     openDeleteCategoryModal,
     editCategoryHandler,
-    setCategoryToBeEditted
+    setCategoryToBeEditted,
+    chosenFilterCategory
   ]);
 
-  const categoriesOptions = (categories && categories.map((c) => c.name)) || [];
+  const categoriesOptions =
+    (categories &&
+      Array.isArray(categories) &&
+      categories.map((c) => c.name)) ||
+    [];
 
   const filters = [
     {
