@@ -32,12 +32,16 @@ const Supplies = () => {
     }, []);
     
     useEffect(() => {
-        if (loadedData) {
-            const { supplies, categories, contacts } = loadedData;
-            setSupplies(supplies.data);
-            setCategories(categories.data);
-            setContacts(contacts.data);
+        if (!loadedData || !Array.isArray(loadedData) || loadedData.length !== 3) {
+          setSupplies([]);
+          setCategories([]);
+          setContacts([]);
+          return;
         }
+
+        setSupplies(loadedData[0].data);
+        setCategories(loadedData[1].data);
+        setContacts(loadedData[2].data);
     }, [loadedData]);
 
     useEffect(() => {
@@ -336,19 +340,11 @@ export const loader = async () => {
     const categoriesUrl = "http://localhost:8080/categories";
     const contactsUrl = "http://localhost:8080/contacts";
 
-    try {
         const allData = await Promise.all([
           fetchData(token, suppliesUrl),
           fetchData(token, categoriesUrl),
           fetchData(token, contactsUrl),
         ]);
 
-        return {
-            supplies: allData[0],
-            categories: allData[1],
-            contacts: allData[2]
-        };
-    } catch (error) {
-        console.log(error);
-    }    
+      return allData;   
 };
