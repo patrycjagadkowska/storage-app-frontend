@@ -10,7 +10,7 @@ const SalesList = ({ sales, contacts, categories, openDeleteModal, openEditModal
     const [ salesList, setSalesList ] = useState([]);
 
     useEffect(() => {
-        if (sales.length === 0) {
+        if (!sales || !Array.isArray(sales) || sales.length === 0) {
             setSalesList([]);
             return;
         }
