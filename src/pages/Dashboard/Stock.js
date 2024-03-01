@@ -1,5 +1,5 @@
 import { useLoaderData, useNavigate } from "react-router";
-import { useState, useEffect, useCallback } from "react";
+import { useEffect, useCallback, useReducer } from "react";
 
 import { fetchData } from "../../constants/helperFns";
 import HeaderWithButtons from "../../components/UI/HeaderWithButons";
@@ -7,60 +7,46 @@ import StockList from "../../components/Stock/StockList";
 import InventoryForm from "../../components/Stock/InventoryForm";
 import EditItemForm from "../../components/ModalForms/EditItemForm";
 import DeleteForm from "../../components/ModalForms/DeleteForm";
+import { initState, reducer } from "../../reducers/stock";
 
 const Stock = () => {
-    const [ showForm, setShowForm ] = useState(false);
-    const [ categories, setCategories ] = useState();
-    const [ items, setItems ] = useState();
-    const [ chosenFilterCategory, setChosenFilterCategory ] = useState(null);
-    const [ chosenDeleteItem, setChosenDeleteItem ] = useState(null);
-    const [ chosenDeleteCategory, setChosenDeleteCategory ] = useState(null);
-    const [ chosenEditCategory, setChosenEditCategory ] = useState(null);
-    const [ openEditItemModal, setOpenEditItemModal ] = useState(false);
-    const [ openDeleteItemModal, setOpenDeleteItemModal ] = useState(false);
-    const [ openDeleteCategoryModal, setOpenDeleteCategoryModal ] = useState(false);
+    const [ state, dispatch ] = useReducer(reducer, initState);
     const loadedData = useLoaderData();
     const navigate = useNavigate();
 
     useEffect(() => {
         if (!loadedData || !Array.isArray(loadedData) || loadedData.length !== 2) {
-            setCategories([]);
-            setItems([]);
+            dispatch({ type: "set_categories", data: [] });
+            dispatch({ type: "set_items", data: [] });
             return;
         }
 
-        setCategories(loadedData[0].data);
-        setItems(loadedData[1].data);
+        dispatch({ type: "set_categories", data: loadedData[0].data });
+        dispatch({ type: "set_items", data: loadedData[1].data });
     }, [loadedData]);
 
     const listButton = {
-        handler: () => {setShowForm(false)},
+        handler: () => {dispatch({ type: "hide_form" })},
         text: "Show all stock"
     };
 
     const formButton = {
-        handler: () => {setShowForm(true)},
+        handler: () => {dispatch({ type: "display_form" })},
         text: "Take inventory"
     };
 
     const onFilterChangeHandler = useCallback(({ name, value }) => {
-        if (name === "category" && value.length > 0) {
-            setChosenFilterCategory(value);
-        } else if (name === "category" && value === "") {
-            setChosenFilterCategory(null);
+        if (name === "category") {
+            dispatch({ type: "set_filter_category", data: value });           
         } else if (name === "itemName" && value.length > 0) {
-            setItems((prevItems) => {
-                const filteredItems =
-                  prevItems &&
-                  prevItems.filter((i) =>
-                    i.name.toLowerCase().includes(value.toLowerCase())
-                  );
-                return filteredItems;
+            const filteredItems = state.items && state.items.filter((i) => {
+                return i.name.toLowerCase().includes(value.toLowerCase())
             });
+            dispatch({ type: "set_items", data: filteredItems });
         } else if (name === "itemName" && value === "") {
-            setItems(loadedData[1].data);
+            dispatch({ type: "set_items", data: loadedData[1].data });
         }
-    }, [loadedData]);
+    }, [loadedData, state.items]);
 
     const onErrorHandler = useCallback(({ name, value }) => {
 
@@ -88,33 +74,36 @@ const Stock = () => {
     };
 
     const chosenItemPrevData =
-      chosenDeleteItem && items && items.find((i) => i.id === chosenDeleteItem);
+      state.chosenItem && state.items && state.items.find((i) => i.id === state.chosenItem);
 
     const toggleEditItemModal = () => {
-        setOpenEditItemModal((prevState) => !prevState);
+        const data = state.openModal === "edit_item" ? null : "edit_item";
+        dispatch({ type: "set_modal", data });
     };
 
     const openEditItemModalHandler = (itemId) => {
-        setChosenDeleteItem(itemId);
-        setOpenEditItemModal(true);
+        dispatch({ type: "set_item", data: itemId })
+        dispatch({ type: "set_modal", data: "edit_item" });
     };
 
     const toggleDeleteItemModal = () => {
-        setOpenDeleteItemModal((prevState) => !prevState);
+        const data = state.openModal === "delete_item" ? null : "delete_item";
+        dispatch({ type: "set_modal", data });
     };
 
     const openDeleteItemModalHandler = (itemId) => {
-        setChosenDeleteItem(itemId);
-        setOpenDeleteItemModal(true);
+        dispatch({ type: "set_item", data: itemId })
+        dispatch({ type: "set_modal", data: "delete_item" });
     };
 
     const toggleDeleteCategoryModal = () => {
-        setOpenDeleteCategoryModal((prevState) => !prevState);
+        const data = state.openModal === "delete_category" ? null : "delete_category";
+        dispatch({ type: "set_modal", data });
     };
 
     const openDeleteCategoryModalHandler = (categoryId) => {
-        setChosenDeleteCategory(categoryId);
-        setOpenDeleteCategoryModal(true);
+        dispatch({ type: "set_category", data: categoryId });
+        dispatch({ type: "set_modal", data: "delete_category" });
     };
 
     const editItemHandler = async (formData) => {
@@ -125,7 +114,7 @@ const Stock = () => {
         const categoryId = chosenItemPrevData.CategoryId;
         
         try {
-            const res = await fetch("http://localhost:8080/editItem/" + chosenDeleteItem, {
+            const res = await fetch("http://localhost:8080/editItem/" + state.chosenItem, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -148,7 +137,7 @@ const Stock = () => {
         const token = localStorage.getItem("token");
 
         try {
-            const res = await fetch("http://localhost:8080/deleteItem/" + chosenDeleteItem, {
+            const res = await fetch("http://localhost:8080/deleteItem/" + state.chosenItem, {
                 method: "POST",
                 headers: {
                     "Authorization": "Bearer " + token
@@ -167,7 +156,7 @@ const Stock = () => {
         const token = localStorage.getItem("token");
 
         try {
-            const res = await fetch("http://localhost:8080/deleteCategory/" + chosenDeleteCategory, {
+            const res = await fetch("http://localhost:8080/deleteCategory/" + state.chosenCategory, {
                 method: "POST",
                 headers: {
                     "Authorization": "Bearer " + token
@@ -185,14 +174,14 @@ const Stock = () => {
     };
 
     const setCategoryToBeEditted = (categoryId) => {
-        setChosenEditCategory(categoryId);
+        dispatch({ type: "set_category", data: categoryId });
     };
 
     const editCategoryHandler = async (newName) => {
         const token = localStorage.getItem("token");
 
         try {
-            const res = await fetch("http://localhost:8080/editCategory/" + chosenEditCategory, {
+            const res = await fetch("http://localhost:8080/editCategory/" + state.chosenCategory, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -218,12 +207,12 @@ const Stock = () => {
           listButton={listButton}
           formButton={formButton}
         />
-        {!showForm && (
+        {!state.showForm && (
           <StockList
             onChangeHandler={onFilterChangeHandler}
-            items={items}
-            categories={categories}
-            chosenFilterCategory={chosenFilterCategory}
+            items={state.items}
+            categories={state.categories}
+            chosenFilterCategory={state.chosenFilterCategory}
             onErrorHandler={onErrorHandler}
             openEditItemModal={openEditItemModalHandler}
             openDeleteItemModal={openDeleteItemModalHandler}
@@ -232,28 +221,28 @@ const Stock = () => {
             setCategoryToBeEditted={setCategoryToBeEditted}
           />
         )}
-        {showForm && (
+        {state.showForm && (
           <InventoryForm
-            categories={categories}
-            items={items}
+            categories={state.categories}
+            items={state.items}
             onSubmit={submitHandler}
           />
         )}
-        {!showForm && openEditItemModal && (
+        {!state.showForm && state.openModal === "edit_item" && (
           <EditItemForm
             toggleModal={toggleEditItemModal}
             editHandler={editItemHandler}
             prevData={chosenItemPrevData}
           />
         )}
-        {!showForm && openDeleteItemModal && (
+        {!state.showForm && state.openModal === "delete_item" && (
           <DeleteForm
             deleteItemName="item"
             toggleModal={toggleDeleteItemModal}
             deleteHandler={deleteItemHandler}
           />
         )}
-        {!showForm && openDeleteCategoryModal && (
+        {!state.showForm && state.openModal === "delete_category" && (
           <DeleteForm
             deleteItemName="category"
             toggleModal={toggleDeleteCategoryModal}
