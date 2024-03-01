@@ -1,5 +1,5 @@
 import { useLoaderData, useNavigate } from "react-router";
-import { useState, useEffect, useCallback } from "react";
+import { useEffect, useCallback, useReducer } from "react";
 
 import { fetchData } from "../../constants/helperFns";
 import HeaderWithButtons from "../../components/UI/HeaderWithButons";
@@ -8,44 +8,38 @@ import SalesList from "../../components/Sales/SalesList";
 import AddContactForm from "../../components/ModalForms/AddContactForm";
 import EditForm from "../../components/ModalForms/EditForm";
 import DeleteForm from "../../components/ModalForms/DeleteForm";
+import { initState, reducer } from "../../reducers/sales";
 
 const Sales = () => {
-    const [ sales, setSales ] = useState([]);
-    const [ categories, setCategories ] = useState([]);
-    const [ contacts, setContacts ] = useState([]);
-    const [ items, setItems ] = useState([]);
-    const [ showForm, setShowForm ] = useState(false);
-    const [ chosenCategory, setChosenCategory ] = useState(null);
-    const [ chosenSale, setChosenSale ] = useState(null);
-    const [ openCustomerForm, setOpenCustomerForm ] = useState(false);
-    const [ openDeleteModal, setOpenDeleteModal ] = useState(false);
-    const [ openEditModal, setOpenEditModal ] = useState(false);
+    const [ state, dispatch ] = useReducer(reducer, initState);
     const loadedData = useLoaderData();
     const navigate = useNavigate();
 
     useEffect(() => {
         if (!loadedData || !Array.isArray(loadedData) || loadedData.length !== 3) {
-          setSales([]);
-          setCategories([]);
-          setContacts([]);
+          dispatch({ type: "set_sales", data: [] });
+          dispatch({ type: "set_categories", data: [] });
+          dispatch({ type: "set_contacts", data: [] });
           return;
         }
 
-        setContacts(loadedData[0].data);
-        setSales(loadedData[1].data);
-        setCategories(loadedData[2].data);
+        dispatch({ type: "set_contacts", data: loadedData[0].data });
+        dispatch({ type: "set_sales", data: loadedData[1].data });
+        dispatch({ type: "set_categories", data: loadedData[2].data });
     }, [loadedData]);
 
     const getFormValues = useCallback((formValues) => {
-      setChosenCategory(formValues.category);
+      dispatch({ type: "set_category", data: formValues.category });
     }, []);
 
     useEffect(() => {
-      if (!chosenCategory || chosenCategory === "") {
+      if (!state.chosenCategory || state.chosenCategory === "") {
         return;
       }
 
-      const categoryId = categories.find((c) => c.name === chosenCategory).id;
+      const categoryId =
+        state.categories &&
+        state.categories.find((c) => c.name === state.chosenCategory).id;
       
       if (!categoryId) {
         console.log("Id not found");
@@ -57,22 +51,22 @@ const Sales = () => {
 
         try {
           const res = await fetchData(token, "http://localhost:8080/categories/" + categoryId);
-          setItems(res.data);
+          dispatch({ type: "set_items", data: res.data });
         } catch (error) {
           console.log(error);
         }
       }
 
       fetchItems();
-    }, [chosenCategory, categories]);
+    }, [state.chosenCategory, state.categories]);
 
     const listButton = {
-        handler: () => {setShowForm(false)},
+        handler: () => {dispatch({ type: "set_form", data: false })},
         text: "Show all sales"
     };
 
     const formButton = {
-        handler: () => {setShowForm(true)},
+        handler: () => {dispatch({ type: "set_form", data: true })},
         text: "Add sale"
     };
 
@@ -90,10 +84,10 @@ const Sales = () => {
         });
         if (res.status === 200 || res.status === 201) {
           const customer = await res.json();
-          const copiedContacts = [...contacts];
+          const copiedContacts = [...state.contacts];
           copiedContacts.push(customer.contact);
-          setContacts(copiedContacts);
-          setOpenCustomerForm(false);
+          dispatch({ type: "set_contacts", data: copiedContacts });
+          dispatch({ type: "set_modal" });
         } else {
           console.log(res);
         }
@@ -103,16 +97,17 @@ const Sales = () => {
     };
 
     const toggleCustomerModal = () => {
-      setOpenCustomerForm((prevState) => !prevState);
+      const data = state.openModal === "customer" ? null : "customer";
+      dispatch({ type: "set_modal", data });
     };
 
     const editSaleHandler = async (formValues) => {
       const token = localStorage.getItem("token");
       const { date, customer } = formValues;
 
-      const customerId = contacts.find((c) => c.name === customer).id;
+      const customerId = state.contacts && state.contacts.find((c) => c.name === customer).id;
       try {
-        const res = await fetch("http://localhost:8080/sales/" + chosenSale, {
+        const res = await fetch("http://localhost:8080/sales/" + state.chosenSale, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -132,15 +127,16 @@ const Sales = () => {
     };
 
     const toggleEditModal = (saleId) => {
-      setChosenSale(saleId);
-      setOpenEditModal((prevState) => !prevState);
+      dispatch({ type: "set_sale", data: saleId });
+      const data = state.openModal === "edit" ? null : "edit";
+      dispatch({ type: "set_modal", data });
     };
 
     const deleteSaleHandler = async () => {
         const token = localStorage.getItem("token");
 
         try {
-          const res = await fetch("http://localhost:8080/deleteSale/" + chosenSale, {
+          const res = await fetch("http://localhost:8080/deleteSale/" + state.chosenSale, {
             method: "POST",
             headers: {
               "Authorization": "Bearer " + token
@@ -158,11 +154,12 @@ const Sales = () => {
     };
 
     const toggleDeleteModal = (saleId) => {
-      setChosenSale(saleId);
-      setOpenDeleteModal((prevState) => !prevState);
+      const data = state.openModal === "delete" ? null : "delete";
+      dispatch({ type: "set_sale", data: saleId });
+      dispatch({ type: "set_modal", data });
     };
 
-    const saleToBeEditted = sales.find((s) => s.id === chosenSale);
+    const saleToBeEditted = state.sales && state.sales.find((s) => s.id === state.chosenSale);
 
     return (
       <>
@@ -171,40 +168,40 @@ const Sales = () => {
           listButton={listButton}
           formButton={formButton}
         />
-        {!showForm && (
+        {!state.showForm && (
           <SalesList
-            sales={sales}
-            contacts={contacts}
-            categories={categories}
+            sales={state.sales}
+            contacts={state.contacts}
+            categories={state.categories}
             openDeleteModal={toggleDeleteModal}
             openEditModal={toggleEditModal}
           />
         )}
-        {showForm && (
+        {state.showForm && (
           <SalesForm
-            categories={categories}
-            contacts={contacts}
+            categories={state.categories}
+            contacts={state.contacts}
             getFormValues={getFormValues}
-            items={items}
+            items={state.items}
             openCustomerForm={toggleCustomerModal}
           />
         )}
-        {openCustomerForm && (
+        {state.openModal === "customer" && (
           <AddContactForm
             addHandler={addCustomerHandler}
             toggleModal={toggleCustomerModal}
           />
         )}
-        {openEditModal && (
+        {state.openModal === "edit" && (
           <EditForm
             isSupply={false}
             prevData={saleToBeEditted}
             toggleModal={toggleEditModal}
             editHandler={editSaleHandler}
-            contacts={contacts}
+            contacts={state.contacts}
           />
         )}
-        {openDeleteModal && (
+        {state.openModal === "delete" && (
           <DeleteForm
             deleteHandler={deleteSaleHandler}
             toggleModal={toggleDeleteModal}
