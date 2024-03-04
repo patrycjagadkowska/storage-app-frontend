@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useEffect, useCallback, useReducer } from "react";
 import { useLoaderData, useNavigate } from "react-router";
 
 import HeaderWithButtons from "../../components/UI/HeaderWithButons";
@@ -10,42 +10,32 @@ import AddItemForm from "../../components/ModalForms/AddItemForm";
 import AddContactForm from "../../components/ModalForms/AddContactForm";
 import DeleteForm from "../../components/ModalForms/DeleteForm";
 import EditForm from "../../components/ModalForms/EditForm";
+import { reducer, initState } from "../../reducers/supplies";
 
 const Supplies = () => {
-    const [ supplies, setSupplies ] = useState([]);
-    const [ categories, setCategories ] = useState([]);
-    const [ contacts, setContacts ] = useState([]);
-    const [ items, setItems ] = useState([]);
-    const [ showForm, setShowForm ] = useState(false);
-    const [ showCategoryModal, setShowCategoryModal ] = useState(false);
-    const [ showItemModal, setShowItemModal ] = useState(false);
-    const [ showSupplierModal, setShowSupplierModal ] = useState(false);
-    const [ showDeleteSupplyModal, setShowDeleteSupplyModal ] = useState(false);
-    const [ showEditSupplyModal, setShowEditSupplyModal ] = useState(false);
-    const [ chosenSupply, setChosenSupply ] = useState(null);
-    const [ chosenCategory, setChosenCategory ] = useState(null);
+    const [ state, dispatch ] = useReducer(reducer, initState);
     const loadedData = useLoaderData();
     const navigate = useNavigate();
 
     const getFormValues = useCallback((formValues) => {
-        setChosenCategory(formValues.category);
+        dispatch({ type: "set_category", data: formValues.category });
     }, []);
     
     useEffect(() => {
         if (!loadedData || !Array.isArray(loadedData) || loadedData.length !== 3) {
-          setSupplies([]);
-          setCategories([]);
-          setContacts([]);
+          dispatch({ type: "set_supplies", data: [] });
+          dispatch({ type: "set_categories", data: [] });
+          dispatch({ type: "set_contacts", data: [] });
           return;
         }
 
-        setSupplies(loadedData[0].data);
-        setCategories(loadedData[1].data);
-        setContacts(loadedData[2].data);
+        dispatch({ type: "set_supplies", data: loadedData[0].data });
+        dispatch({ type: "set_categories", data: loadedData[1].data });
+        dispatch({ type: "set_contacts", data: loadedData[2].data });
     }, [loadedData]);
 
     useEffect(() => {
-        if (!chosenCategory || chosenCategory === "") {
+        if (!state.chosenCategory || state.chosenCategory === "") {
           return;
         }
         const token = localStorage.getItem("token");
@@ -55,35 +45,29 @@ const Supplies = () => {
               token,
               "http://localhost:8080/categories/" + id
             );
-            setItems(fetchedItems.data);
+            dispatch({ type: "set_items", data: fetchedItems.data });
           } catch (error) {
             console.log(error);
           }
         };
-        const categoryId = categories.find((cat) => cat.name === chosenCategory).id;
+        const categoryId =
+          state.categories &&
+          state.categories.find((cat) => cat.name === state.chosenCategory).id;
         fetchItems(categoryId);
-      }, [chosenCategory, categories]);
-
-    const showListHandler = () => {
-        setShowForm(false);
-    };
-    
-    const showFormHandler = () => {
-        setShowForm(true);
-    };
+      }, [state.chosenCategory, state.categories]);
 
     const listButton = {
-        handler: showListHandler,
+        handler: () => dispatch({ type: "hide_form" }),
         text: "Show all supplies"
     };
 
     const formButton = {
-        handler: showFormHandler,
+        handler: () => dispatch({ type: "display_form" }),
         text: "Add supply"
     };
 
-    const toggleCategoryModal = () => {
-        setShowCategoryModal((prevState) => !prevState);
+    const toggleModal = (modalName) => {
+      dispatch({ type: "show_modal", data: state.openModal ? null : modalName });
     };
 
     const addCategoryHandler = async (categoryName) => {
@@ -101,30 +85,24 @@ const Supplies = () => {
             if (res.status === 200 || res.status === 201) {
                 const response = await res.json();
                 const category = response.category;
-                setCategories((prevState) => {
-                    const catArray = [...prevState];
-                    catArray.push(category);
-                    return catArray;
-                });
+                dispatch({ type: "add_category", data: category });
             }
-            setShowCategoryModal(false);
+            dispatch({ type: "show_modal" });
         } catch (error) {
             console.log(error);
         }
     };
 
-    const toggleItemModal = () => {
-        setShowItemModal((prevState) => !prevState);
-    };
-
     const addItemHandler = async (item) => {
         const token = localStorage.getItem("token");
 
-        if (!chosenCategory) {
+        if (!state.chosenCategory) {
             console.log("Choose category first");
             return;
         }
-        const categoryId = categories.find((cat) => cat.name === chosenCategory).id;
+        const categoryId =
+          state.categories &&
+          state.categories.find((cat) => cat.name === state.chosenCategory).id;
 
         try {
             const res = await fetch("http://localhost:8080/addItem", {
@@ -138,20 +116,12 @@ const Supplies = () => {
             if (res.status === 200 || res.status === 201) {
                 const response = await res.json();
                 const newItem = response.item;
-                setItems((prevState) => {
-                    const itemsArray = [...prevState];
-                    itemsArray.push(newItem);
-                    return itemsArray;
-                });
+                dispatch({ type: "add_item", data: newItem });
             }
-            setShowItemModal(false);
+            dispatch({ type: "show_modal" });
         } catch (error) {
             console.log(error);
         }
-    };
-
-    const toggleSupplierModal = () => {
-        setShowSupplierModal((prevState) => !prevState);
     };
 
     const addSupplierHandler = async (supplier) => {
@@ -169,29 +139,21 @@ const Supplies = () => {
             if (res.status === 200 || res.status === 201) {
                 const response = await res.json();
                 const newContact = response.contact;
-                setContacts((prevState) => {
-                    const contactsArray = [...prevState];
-                    contactsArray.push(newContact);
-                    return contactsArray;
-                });
+                dispatch({ type: "add_contact", data: newContact });
             }
-            setShowSupplierModal(false);
+            dispatch({ type: "show_modal" });
         } catch (error) {
             console.log(error);
         }
-    }
-
-    const toggleDeleteSupplyModal = () => {
-      setShowDeleteSupplyModal((prevState) => !prevState);
     };
 
     const openDeleteFormHandler = (supplyId) => {
-      setShowDeleteSupplyModal(true);
-      setChosenSupply(supplyId);
+      dispatch({ type: "show_modal", data: "delete" });
+      dispatch({ type: "set_supply", data: supplyId });
     };
 
     const deleteSupplyHandler = async () => {
-        if (!chosenSupply) {
+        if (!state.chosenSupply) {
           console.log("No supply chosen");
           return;
         }
@@ -199,7 +161,7 @@ const Supplies = () => {
         const token = localStorage.getItem("token");
 
         try {
-          const res = await fetch("http://localhost:8080/deleteSupply/"+ chosenSupply, {
+          const res = await fetch("http://localhost:8080/deleteSupply/"+ state.chosenSupply, {
             method: "POST",
             headers: {
               "Authorization": "Bearer " + token
@@ -211,38 +173,38 @@ const Supplies = () => {
         } catch (error) {
           console.log(error);
         }
-    }
-
-    const toggleEditSupplyModal = () => {
-      setShowEditSupplyModal((prevState) => !prevState);
     };
 
     const openEditFormHandler = (supplyId) => {
-      setShowEditSupplyModal(true);
-      setChosenSupply(supplyId);
+      dispatch({ type: "show_modal", data: "edit" });
+      dispatch({ type: "set_supply", data: supplyId });
     };
 
-   
-
     const editSupplyHandler = async (formValues) => {
-        if (!chosenSupply) {
+        if (!state.chosenSupply) {
           console.log("No supply chosen");
           return;
         }
 
         const token = localStorage.getItem("token");
-        const supplierId = contacts.find((c) => c.name === formValues.supplier).id;
+        const supplierId =
+          state.contacts &&
+          state.contacts.find((c) => c.name === formValues.supplier).id;
         //editting items not available yet
-        const prevItems = supplies.find((s) => s.id === chosenSupply).Items.map((item) => {
-          return {
-            itemId: item.id,
-            purchasePrice: item.SupplyItem.purchasePrice,
-            quantity: item.SupplyItem.quantity,
-          }
-        });
+        const prevItems =
+          state.supplies &&
+          state.supplies
+            .find((s) => s.id === state.chosenSupply)
+            .Items.map((item) => {
+              return {
+                itemId: item.id,
+                purchasePrice: item.SupplyItem.purchasePrice,
+                quantity: item.SupplyItem.quantity,
+              };
+            });
 
         try {
-          const res = await fetch("http://localhost:8080/supplies/" + chosenSupply, {
+          const res = await fetch("http://localhost:8080/supplies/" + state.chosenSupply, {
             method: "POST",
             headers: {
               "Authorization": "Bearer " + token,
@@ -262,7 +224,8 @@ const Supplies = () => {
         }
     };
 
-    const supplyToBeEditted = supplies.find((s) => s.id === chosenSupply);
+    const supplyToBeEditted =
+      state.supplies && state.supplies.find((s) => s.id === state.chosenSupply);
 
     return (
       <>
@@ -271,60 +234,60 @@ const Supplies = () => {
           listButton={listButton}
           formButton={formButton}
         />
-        {!showForm && (
+        {!state.showForm && (
           <SuppliesList
-            supplies={supplies}
-            contacts={contacts}
-            categories={categories}
+            supplies={state.supplies}
+            contacts={state.contacts}
+            categories={state.categories}
             openDeleteForm={openDeleteFormHandler}
             openEditForm={openEditFormHandler}
           />
         )}
-        {showForm && (
+        {state.showForm && (
           <SuppliesForm
-            categories={categories}
-            contacts={contacts}
-            items={items}
-            updateCategories={toggleCategoryModal}
-            updateItems={toggleItemModal}
-            updateContacts={toggleSupplierModal}
+            categories={state.categories}
+            contacts={state.contacts}
+            items={state.items}
+            updateCategories={() => toggleModal("category")}
+            updateItems={() => toggleModal("item")}
+            updateContacts={() => toggleModal("supplier")}
             getFormValues={getFormValues}
           />
         )}
-        {showCategoryModal && !showItemModal && !showSupplierModal && (
+        {state.openModal === "category" && (
           <AddCategoryForm
-            toggleModal={toggleCategoryModal}
+            toggleModal={() => toggleModal("category")}
             addCategoryHandler={addCategoryHandler}
           />
         )}
-        {showItemModal && !showCategoryModal && !showSupplierModal && (
+        {state.openModal === "item" && (
           <AddItemForm
-            toggleModal={toggleItemModal}
+            toggleModal={() => toggleModal("item")}
             addItemHandler={addItemHandler}
           />
         )}
-        {showSupplierModal && !showCategoryModal && !showItemModal && (
+        {state.openModal === "supplier" && (
           <AddContactForm
-            toggleModal={toggleSupplierModal}
+            toggleModal={() => toggleModal("supplier")}
             addHandler={addSupplierHandler}
           />
         )}
         {
-          showDeleteSupplyModal &&
+          state.openModal === "delete" &&
           <DeleteForm
-          toggleModal={toggleDeleteSupplyModal}
+          toggleModal={() => toggleModal("delete")}
           deleteHandler={deleteSupplyHandler}
           deleteItemName="supply"
           />
         }
         {
-          showEditSupplyModal &&
+          state.openModal === "edit" &&
           <EditForm
-          toggleModal={toggleEditSupplyModal}
-          contacts={contacts}
+          toggleModal={() => toggleModal("edit")}
+          contacts={state.contacts}
           prevData={supplyToBeEditted}
           editHandler={editSupplyHandler}
-          categories={categories}
+          categories={state.categories}
           isSupply={true}
           />
         }
