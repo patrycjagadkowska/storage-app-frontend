@@ -49,10 +49,10 @@ const Stock = () => {
     }, [loadedData, state.items]);
 
     const onErrorHandler = useCallback(({ name, value }) => {
-
+        return;
     }, []);
 
-    const submitHandler = async (formValues) => {
+    const submitInventoryHandler = async (formValues) => {
         const token = localStorage.getItem("token");
 
         try {
@@ -77,8 +77,7 @@ const Stock = () => {
       state.chosenItem && state.items && state.items.find((i) => i.id === state.chosenItem);
 
     const toggleEditItemModal = () => {
-        const data = state.openModal === "edit_item" ? null : "edit_item";
-        dispatch({ type: "set_modal", data });
+        dispatch({ type: "set_modal", data: state.openModal === "edit_item" ? null : "edit_item" });
     };
 
     const openEditItemModalHandler = (itemId) => {
@@ -87,8 +86,10 @@ const Stock = () => {
     };
 
     const toggleDeleteItemModal = () => {
-        const data = state.openModal === "delete_item" ? null : "delete_item";
-        dispatch({ type: "set_modal", data });
+        dispatch({
+          type: "set_modal",
+          data: state.openModal === "delete_item" ? null : "delete_item",
+        });
     };
 
     const openDeleteItemModalHandler = (itemId) => {
@@ -97,8 +98,11 @@ const Stock = () => {
     };
 
     const toggleDeleteCategoryModal = () => {
-        const data = state.openModal === "delete_category" ? null : "delete_category";
-        dispatch({ type: "set_modal", data });
+        dispatch({
+          type: "set_modal",
+          data:
+            state.openModal === "delete_category" ? null : "delete_category",
+        });
     };
 
     const openDeleteCategoryModalHandler = (categoryId) => {
@@ -225,7 +229,7 @@ const Stock = () => {
           <InventoryForm
             categories={state.categories}
             items={state.items}
-            onSubmit={submitHandler}
+            onSubmit={submitInventoryHandler}
           />
         )}
         {!state.showForm && state.openModal === "edit_item" && (
