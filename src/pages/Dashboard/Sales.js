@@ -168,9 +168,8 @@ const Sales = () => {
     };
 
     const toggleDeleteModal = (saleId) => {
-      const data = state.openModal === "delete" ? null : "delete";
       dispatch({ type: "set_sale", data: saleId });
-      dispatch({ type: "set_modal", data });
+      dispatch({ type: "set_modal", data: state.openModal === "delete" ? null : "delete" });
     };
 
     const saleToBeEditted = state.sales && state.sales.find((s) => s.id === state.chosenSale);
