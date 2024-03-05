@@ -1,4 +1,4 @@
-import { useLoaderData, useNavigate } from "react-router";
+import { useLoaderData } from "react-router";
 import { useEffect, useCallback, useReducer } from "react";
 
 import { fetchData } from "../../constants/helperFns";
@@ -13,7 +13,6 @@ import { initState, reducer } from "../../reducers/sales";
 const Sales = () => {
     const [ state, dispatch ] = useReducer(reducer, initState);
     const loadedData = useLoaderData();
-    const navigate = useNavigate();
 
     useEffect(() => {
         if (!loadedData || !Array.isArray(loadedData) || loadedData.length !== 3) {
@@ -140,8 +139,7 @@ const Sales = () => {
 
     const toggleEditModal = (saleId) => {
       dispatch({ type: "set_sale", data: saleId });
-      const data = state.openModal === "edit" ? null : "edit";
-      dispatch({ type: "set_modal", data });
+      dispatch({ type: "set_modal", data: state.openModal === "edit" ? null : "edit" });
     };
 
     const deleteSaleHandler = async () => {
@@ -156,7 +154,11 @@ const Sales = () => {
           });
 
           if (res.status === 200 || res.status === 201) {
-            navigate(0)
+            const copiedSales = [...state.sales];
+            const deletedSaleIndex = copiedSales.findIndex((sale) => sale.id === state.chosenSale);
+            copiedSales.splice(deletedSaleIndex, 1);
+            dispatch({ type: "set_sales", data: copiedSales });
+            dispatch({ type: "set_modal" });
           } else {
             console.log(res);
           }
