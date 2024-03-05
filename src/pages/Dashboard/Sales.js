@@ -97,8 +97,7 @@ const Sales = () => {
     };
 
     const toggleCustomerModal = () => {
-      const data = state.openModal === "customer" ? null : "customer";
-      dispatch({ type: "set_modal", data });
+      dispatch({ type: "set_modal", data: state.openModal === "customer" ? null : "customer" });
     };
 
     const editSaleHandler = async (formValues) => {
@@ -117,7 +116,20 @@ const Sales = () => {
         });
 
         if (res.status === 200 || res.status === 201) {
-          navigate(0);
+          const responseData = await res.json();
+          const savedSaleData = responseData.data;
+          const copiedSales = [...state.sales];
+          const existingSaleIndex = copiedSales.findIndex((sale) => {
+            return sale.id === savedSaleData.id;
+          });
+
+          if (existingSaleIndex < 0) {
+            throw new Error("Old and new id don't match!");
+          }
+
+          copiedSales.splice(existingSaleIndex, 1, savedSaleData);
+          dispatch({ type: "set_sales", data: copiedSales });
+          dispatch({ type: "set_modal" });
         } else {
           console.log(res);
         }
