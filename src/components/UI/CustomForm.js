@@ -77,7 +77,7 @@ const CustomForm = ({ inputs, onSubmit, button, getFormValues, formError }) => {
           fn = { validationFn };
         }
         return (
-          <div className={classes["form__row"]}>
+          <div className={classes["form__row"]} key={id}>
             <CustomInput
               label={label}
               id={id}

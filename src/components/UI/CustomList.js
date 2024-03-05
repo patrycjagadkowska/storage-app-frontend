@@ -13,10 +13,10 @@ const CustomList = ({ items }) => {
             return;
         }
 
-        const mappedItems = items.map((item) => {
+        const mappedItems = items.map((item, index) => {
             const { title, content } = item;
             return (
-                <CustomListItem title={title} key={title}>
+                <CustomListItem title={title} key={index}>
                     { content }
                 </CustomListItem>
             );

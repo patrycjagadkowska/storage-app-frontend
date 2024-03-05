@@ -31,7 +31,7 @@ const StockTable = ({
 
     const mappedRecords = items.map((i) => {
       return (
-        <tr>
+        <tr key={i.id}>
           <td>{i.name}</td>
           <td>{i.quantity}</td>
           <td>{i.salePrice}</td>

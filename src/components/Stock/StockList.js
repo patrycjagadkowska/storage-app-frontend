@@ -47,6 +47,7 @@ const StockList = ({
         <StockTable
           categoryName={c.name}
           categoryId={c.id}
+          key={c.id}
           items={categoryItems}
           openEditItemModal={openEditItemModal}
           openDeleteItemModal={openDeleteItemModal}
