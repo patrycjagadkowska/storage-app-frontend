@@ -1,0 +1,44 @@
+.list-header, .list-header__handlers {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.list-header__main-header {
+    font-size: 1.25rem;
+}
+
+.list-header span,
+.list-header__handler:first-child {
+    margin-right: 0.5rem;
+}
+
+.list-header__handler {
+    padding: 0.75rem;
+}
+
+.list-header__handler svg {
+    width: 1.25rem;
+    height: 1.25rem;
+}
+
+.list-header__handler span {
+    display: none;
+}
+
+.inner-list-ctr__add-info {
+    margin: 0.5rem 0;
+    font-size: 1.5rem;
+}
+
+.inner-list-ctr__add-info span {
+    font-weight: bold;
+}
+
+.inner-list-ctr__header {
+    font-size: 1.25rem;
+    margin: 1rem 0;
+}
