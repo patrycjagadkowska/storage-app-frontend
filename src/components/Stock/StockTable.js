@@ -7,6 +7,7 @@ import CustomInput from "../UI/CustomInput";
 import { validateName } from "../../constants/validationFns";
 
 import classes from "./Stock.module.css";
+import tableClasses from "../UI/styles/CustomTable.module.css";
 
 const StockTable = ({
   items,
@@ -36,12 +37,12 @@ const StockTable = ({
           <td>{i.quantity}</td>
           <td>{i.salePrice}</td>
           <td>
-            <div className={classes["btn-cell"]}>
+            <div className={tableClasses["btn-cell"]}>
               <CustomButton
                 onClick={() => {
                   openEditItemModal(i.id);
                 }}
-                className={classes["edit-btn"]}
+                className={tableClasses["edit-btn"]}
               >
                 <FaEdit />
               </CustomButton>{" "}
@@ -49,7 +50,7 @@ const StockTable = ({
                 onClick={() => {
                   openDeleteItemModal(i.id);
                 }}
-                className={classes["edit-btn"]}
+                className={tableClasses["edit-btn"]}
               >
                 <RiDeleteBinFill />
               </CustomButton>
@@ -119,13 +120,13 @@ const editCategoryHandler = (event) => {
         )}
         <div className={classes["category__header--buttons"]}>
           <CustomButton
-            className={classes["edit-btn"]}
+            className={tableClasses["edit-btn"]}
             onClick={openEditCategory}
           >
             <FaEdit />
           </CustomButton>{" "}
           <CustomButton
-            className={classes["edit-btn"]}
+            className={tableClasses["edit-btn"]}
             onClick={() => openDeleteCategoryModal(categoryId)}
           >
             <RiDeleteBinFill />
@@ -133,7 +134,7 @@ const editCategoryHandler = (event) => {
         </div>
       </div>
       {records.length > 0 && (
-        <table className={classes.table}>
+        <table className={tableClasses.table}>
           <thead>
             <tr>
               <th>Name</th>
