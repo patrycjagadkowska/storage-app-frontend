@@ -1,34 +1,46 @@
 import { useState, useEffect } from "react";
 
-import CustomList from "../UI/CustomList";
+import classes from "../UI/styles/CustomTable.module.css";
 
 const SupplyItemsList = ({ items, categories }) => {
-    const [ itemsList, setItemsList ] = useState([]);
+    const [ itemsRows, setItemsRows ] = useState([]);
 
     useEffect(() => {
-        if (!Array.isArray(items) || !items || items.length <= 0) {
-            setItemsList([]);
+        if (!items || !Array.isArray(items) || items.length <= 0) {
+            setItemsRows([]);
             return;
         }
 
-        const mappedItems = items.map((i) => {
+        const mappedRows = items.map((i) => {
+            console.log(i);
             const categoryName = categories.find((c) => c.id === i.CategoryId).name;
-
-            return {
-                title: i.name,
-                content: <div>
-                    <span>Category: {categoryName}</span>
-                    <span>Quantity: {i.SupplyItem.quantity}</span>
-                    <span>Price: {i.SupplyItem.purchasePrice}</span>
-                </div>
-            };
+            return (
+                <tr>
+                    <td>{i.name}</td>
+                    <td>{categoryName}</td>
+                    <td>{i.SupplyItem.quantity}</td>
+                    <td>{i.SupplyItem.purchasePrice}</td>
+                </tr>
+            );
         });
-        setItemsList(mappedItems);
+        setItemsRows(mappedRows);
     }, [items, categories]);
 
     return (
-        <CustomList items={itemsList} />
-    );
+        <table className={classes.table}>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                {itemsRows}
+            </tbody>
+        </table>
+    )
 };
 
 export default SupplyItemsList;
