@@ -1,6 +1,6 @@
 .list {
     border: 2px #fabc9d solid;
-    padding: 0 2.5rem;
+    padding: 0 1.5rem 0 2.5rem;
 }
 
 .item {
@@ -18,6 +18,10 @@
 .item__children {
     padding: 0.5rem;
     color: #a47c64;
+}
+
+.list__no-border .item {
+    border: none;
 }
 
 @media (min-width: 768px) {
