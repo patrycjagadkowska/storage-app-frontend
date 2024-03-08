@@ -30,7 +30,7 @@ const ContactsList = ({ contacts }) => {
     }, [contacts]);
 
     return (
-        <CustomList items={items} />
+        <CustomList className={classes["contact-list"]} items={items} />
     );
 };
 
