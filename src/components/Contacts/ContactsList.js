@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 
 import CustomList from "../UI/CustomList";
+import ListHeader from "../UI/ListHeader";
 
 import classes from "./ContactsList.module.css";
 
@@ -17,7 +18,7 @@ const ContactsList = ({ contacts }) => {
             const { name, email, address, phone } = contact;
 
             return {
-                title: name,
+                title: <ListHeader header={name} editHandler={() => {}} deleteHandler={() => {}} />,
                 content: (<div className={classes["contact-data"]}>
                     <span>Phone: {phone || ""}</span>
                     <span>Address: {address || ""}</span>
