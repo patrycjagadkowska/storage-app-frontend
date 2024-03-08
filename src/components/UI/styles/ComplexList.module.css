@@ -11,7 +11,7 @@
     font-size: 1.25rem;
 }
 
-.list-header span,
+.list-header h3,
 .list-header__handler:first-child {
     margin-right: 0.5rem;
 }
