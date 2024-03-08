@@ -5,7 +5,7 @@ import ListHeader from "../UI/ListHeader";
 
 import classes from "./ContactsList.module.css";
 
-const ContactsList = ({ contacts }) => {
+const ContactsList = ({ contacts, openDeleteModal }) => {
     const [ items, setItems ] = useState([]);
 
     useEffect(() => {
@@ -18,17 +18,27 @@ const ContactsList = ({ contacts }) => {
             const { name, email, address, phone } = contact;
 
             return {
-                title: <ListHeader header={name} editHandler={() => {}} deleteHandler={() => {}} />,
-                content: (<div className={classes["contact-data"]}>
-                    <span>Phone: {phone || ""}</span>
-                    <span>Address: {address || ""}</span>
-                    <span>Email: {email || ""}</span>
-                </div>)
-            }
+              title: (
+                <ListHeader
+                  header={name}
+                  editHandler={() => {}}
+                  deleteHandler={() => {
+                    openDeleteModal(contact.id);
+                  }}
+                />
+              ),
+              content: (
+                <div className={classes["contact-data"]}>
+                  <span>Phone: {phone || ""}</span>
+                  <span>Address: {address || ""}</span>
+                  <span>Email: {email || ""}</span>
+                </div>
+              ),
+            };
         });
 
         setItems(mappedItems);
-    }, [contacts]);
+    }, [contacts, openDeleteModal]);
 
     return (
         <CustomList className={classes["contact-list"]} items={items} />
