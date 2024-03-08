@@ -4,7 +4,7 @@ import CustomListItem from "./CustomListItem";
 
 import classes from "./styles/CustomList.module.css";
 
-const CustomList = ({ items, noBorder }) => {
+const CustomList = ({ items, noBorder, className }) => {
     const [ listItems, setListItems ] = useState([]);
 
     useEffect(() => {
@@ -25,10 +25,14 @@ const CustomList = ({ items, noBorder }) => {
     }, [items]);
 
     return (
-        <ol className={`${classes.list} ${noBorder ? classes["list__no-border"] : ""}`}>
-            { listItems.length > 0 && listItems }
-            { listItems.length === 0 && <p>No data found.</p>}
-        </ol>
+      <ol
+        className={`${classes.list} ${
+          noBorder ? classes["list__no-border"] : ""
+        } ${className ? className : ""}`}
+      >
+        {listItems.length > 0 && listItems}
+        {listItems.length === 0 && <p>No data found.</p>}
+      </ol>
     );
 };
 
