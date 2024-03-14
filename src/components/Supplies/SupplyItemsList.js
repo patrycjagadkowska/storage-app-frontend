@@ -12,10 +12,9 @@ const SupplyItemsList = ({ items, categories }) => {
         }
 
         const mappedRows = items.map((i) => {
-            console.log(i);
             const categoryName = categories.find((c) => c.id === i.CategoryId).name;
             return (
-                <tr>
+                <tr key={i.id}>
                     <td>{i.name}</td>
                     <td>{categoryName}</td>
                     <td>{i.SupplyItem.quantity}</td>
