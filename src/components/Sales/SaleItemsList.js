@@ -14,7 +14,7 @@ const SaleItemsList = ({ items, categories }) => {
         const mappedRows = items.map((i) => {
             const categoryName = categories.find((c) => c.id === i.CategoryId).name;
             return (
-                <tr>
+                <tr key={i.id}>
                     <td>{i.name}</td>
                     <td>{categoryName}</td>
                     <td>{i.SaleItem.quantity}</td>
