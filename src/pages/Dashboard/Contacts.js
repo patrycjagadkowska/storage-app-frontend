@@ -6,6 +6,7 @@ import ContactsForm from "../../components/Contacts/ContactsForm";
 import HeaderWithButtons from "../../components/UI/HeaderWithButons";
 import { initState, reducer } from "../../reducers/contacts";
 import DeleteForm from "../../components/ModalForms/DeleteForm";
+import EditContactForm from "../../components/ModalForms/EditContactForm";
 
 const Contacts = () => {
     const [ state, dispatch ] = useReducer(reducer, initState);
@@ -67,7 +68,55 @@ const Contacts = () => {
         } catch (error) {
             console.log(error);
         }
-    }
+    };
+
+    const openEditModal = (id) => {
+        dispatch({ type: "set_contact", data: id });
+        dispatch({ type: "set_modal", data: "edit" });
+    };
+
+    const toggleEditModal = () => {
+        dispatch({ type: "set_modal", data: state.openModal ? null : "edit" });
+    };
+
+    const editHandler = async (formValues) => {
+        const token = localStorage.getItem("token");
+        const { name, phone, address, email } = formValues;
+
+        try {
+            if (!state.chosenContact) {
+                return;
+            }
+            const res = await fetch(
+              "http://localhost:8080/editContact/" + state.chosenContact,
+              {
+                method: "POST",
+                headers: {
+                  Authorization: "Bearer " + token,
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  name: name || prevData.name,
+                  email: email || prevData.email,
+                  address: address || prevData.address,
+                  phone: phone || prevData.phone,
+                }),
+              }
+            );
+
+            if (res.status === 200 || res.status === 201) {
+                navigate(0);
+            } else {
+                console.log(res);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const prevData =
+      state.chosenContact &&
+      state.contacts.find((c) => c.id === state.chosenContact);
 
     return (
       <>
@@ -80,6 +129,7 @@ const Contacts = () => {
           <ContactsList
             contacts={state.contacts}
             openDeleteModal={openDeleteModal}
+            openEditModal={openEditModal}
           />
         )}
         {state.showForm && <ContactsForm />}
@@ -88,6 +138,13 @@ const Contacts = () => {
             deleteHandler={deleteHandler}
             toggleModal={toggleDeleteModal}
             deleteItemName={`${state.chosenContact || " "} contact`}
+          />
+        )}
+        {state.openModal === "edit" && (
+          <EditContactForm
+            editHandler={editHandler}
+            toggleModal={toggleEditModal}
+            prevData={prevData}
           />
         )}
       </>
