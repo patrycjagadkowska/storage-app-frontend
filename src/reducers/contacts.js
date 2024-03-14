@@ -24,7 +24,7 @@ export const reducer = (state, action) => {
         }
         case "hide_form": {
             return {
-                ...state, shwForm: false
+                ...state, showForm: false
             };
         }
         case "set_modal": {
