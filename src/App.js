@@ -8,7 +8,7 @@ import PlansPage from "./pages/Home/PlansPage";
 import ReviewsPage from "./pages/Home/ReviewsPage";
 
 import DashboardLayout from "./components/Layout/DashboardLayout";
-import Dashboard from "./pages/Dashboard/Dashboard";
+import Dashboard, {loader as dashboardLoader } from "./pages/Dashboard/Dashboard";
 import Settings, { loader as settingsLoader } from "./pages/Dashboard/Settings";
 import Contacts, { loader as contactsLoader } from "./pages/Dashboard/Contacts";
 import Supplies, { loader as suppliesLoader } from "./pages/Dashboard/Supplies";
@@ -48,7 +48,8 @@ function App() {
       children: [
         {
           index: true,
-          element: <Dashboard />
+          element: <Dashboard />,
+          loader: dashboardLoader
         },
         {
           path: "settings",
