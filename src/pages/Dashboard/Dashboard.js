@@ -8,8 +8,6 @@ const Dashboard = () => {
     const [ state, dispatch ] = useReducer(reducer, initState);
     const loadedData = useLoaderData();
 
-    console.log(state.monthlyIncomeData);
-
     useEffect(() => {
         if (!loadedData.data || !Array.isArray(loadedData.data) || loadedData.data.length < 1) {
             dispatch({ type: "set_monthly_income_data", data: [] });
