@@ -1,0 +1,51 @@
+.stat-card {
+    box-shadow: inset 2px 2px 10px rgba(255,255,255,.1), inset -5px -8px 8px rgba(0,0,0,.2);
+    background-color: #f9e1d55a;
+    padding: 1rem;
+    border-radius: 2rem;
+}
+
+.stat-card .header {
+    font-size: 1.25rem;
+    margin: 0.5rem 0;
+}
+
+.financial-summary {
+    display: -ms-grid;
+    display: grid;
+    grid-template-columns: auto auto;
+}
+
+.vertical-line {
+    grid-column: 1 / span 2;
+    background-color: #a47c64;
+    width: 95%;
+    height: 0.125rem;
+    margin: 0.5rem auto;
+}
+
+.financial-summary__col {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    padding: 0 1rem;
+}
+
+.stat-card,
+.financial-summary,
+.financial-summary__col,
+.financial-summary__col > * {
+    width: fit-content;
+}
+
+.warehouse-summary {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
