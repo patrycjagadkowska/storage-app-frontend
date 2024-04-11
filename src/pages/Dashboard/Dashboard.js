@@ -28,8 +28,10 @@ export default Dashboard;
 
 export const loader = async () => {
     const token = localStorage.getItem("token");
+    const month = new Date().getMonth();
+    const year = new Date().getFullYear();
 
-    return await fetch("http://localhost:8080/monthly-income?year=2024&month=2", {
+    return await fetch("http://localhost:8080/monthly-income?year=" + year + "&month=" + month, {
         method: "GET", 
         headers: {
             "Authorization": "Bearer " + token
