@@ -56,6 +56,11 @@
     margin: 0 auto;
 }
 
+.monthly-income {
+    grid-column: 1 / span 2;
+    margin: 0 auto;
+}
+
 @media (min-width: 992px) {
     .chart {
         grid-column: 2 / 3;

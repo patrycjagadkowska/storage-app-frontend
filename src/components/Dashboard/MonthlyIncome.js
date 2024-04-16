@@ -4,7 +4,7 @@ import classes from "./Dashboard.module.css";
 
 const MonthlyIncome = ({ data }) => {
     return (
-      <StatCard>
+      <StatCard className={classes["monthly-income"]}>
         <h3 className={classes.header}>Monthly Income</h3>
         <div className={classes["financial-summary"]}>
           <div className={classes["financial-summary__col"]}>
