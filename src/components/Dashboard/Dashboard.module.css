@@ -65,4 +65,8 @@
     .chart {
         grid-column: 2 / 3;
     }
+
+    .monthly-income {
+        grid-column: 1 / 2;
+    }
 }
