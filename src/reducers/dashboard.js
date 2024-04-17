@@ -1,6 +1,7 @@
 export const initState = {
     monthlyIncomeData: {},
     sixMonthsData: [],
+    lastMonthData: []
 };
 
 export const reducer = (state, action) => {
@@ -21,13 +22,25 @@ export const reducer = (state, action) => {
             if (!action.data || !Array.isArray(action.data)) {
                 return {
                     ...state, 
-                    sixMonthsData: action.data
+                    sixMonthsData: []
                 };
             }
             return {
                 ...state,
                 sixMonthsData: action.data
             }
+        }
+        case "set_last_month_data": {
+            if (!action.data || !Array.isArray(action.data)) {
+                return {
+                    ...state,
+                    lastMonthData: []
+                };
+            }
+            return {
+                ...state,
+                lastMonthData: action.data
+            };
         }
         default: {
             return state;
