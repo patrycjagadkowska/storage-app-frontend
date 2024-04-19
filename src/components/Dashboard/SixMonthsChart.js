@@ -11,7 +11,7 @@ import classes from "./Dashboard.module.css";
 
 const SixMonthsChart = ({ data }) => {
     const deviceWidth = window.screen.width;
-    const width = deviceWidth < 992 ? deviceWidth *0.8 : deviceWidth * 0.5;
+    const width = deviceWidth < 768 ? deviceWidth *0.8 : deviceWidth * 0.5;
     const hide = deviceWidth < 992 ? true : false;
    
   return (
