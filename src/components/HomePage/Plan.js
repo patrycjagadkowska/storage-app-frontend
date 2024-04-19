@@ -11,8 +11,8 @@ const Plan = ({ title, details, price }) => {
             return;
         }
 
-        const mappedList = details.map((detail) => {
-            return <li className={classes["plan__detail"]}>{detail}</li>
+        const mappedList = details.map((detail, index) => {
+            return <li key={`${detail.substring(0, 3)}/${index}`} className={classes["plan__detail"]}>{detail}</li>
         });
         setListItems(mappedList);
     }, [details]);

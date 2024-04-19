@@ -13,9 +13,9 @@ const Plans = ({ plansInfo }) => {
             return;
         }
 
-        const mappedPlans = plansInfo.map((plan) => {
+        const mappedPlans = plansInfo.map((plan, index) => {
             const { title, details, price } = plan;
-            return <Plan title={title} details={details} price={price} />;
+            return <Plan key={`${title}/${index}`} title={title} details={details} price={price} />;
         });
         setPlans(mappedPlans);
     }, [plansInfo]);
