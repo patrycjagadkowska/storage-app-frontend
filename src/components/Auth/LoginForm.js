@@ -1,10 +1,13 @@
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 import CustomForm from "../UI/CustomForm";
 import { validateEmail, validatePassword } from "../../constants/validationFns";
+import { checkIfEmpty } from "../../constants/helperFns";
 
 const LoginForm = () => {
     const navigate = useNavigate();
+    const [ requestError, setRequestError ] = useState(null);
 
     const inputs = [
         {
@@ -26,6 +29,12 @@ const LoginForm = () => {
     ];
 
     const submitHandler = async (formData) => {
+        const formValues = Object.values(formData);
+        const isEmpty = checkIfEmpty(formValues);
+        if (isEmpty) {
+            setRequestError("Please fill all the fields.");
+            return;
+        }
         try {
             const res = await fetch("http://localhost:8080/login", {
                 method: "POST",
@@ -49,7 +58,12 @@ const LoginForm = () => {
     };
 
     return (
-        <CustomForm inputs={inputs} onSubmit={submitHandler} button="Log in" />
+      <CustomForm
+        inputs={inputs}
+        onSubmit={submitHandler}
+        button="Log in"
+        formError={requestError}
+      />
     );
 };
 
