@@ -43,10 +43,8 @@ const CustomForm = ({ inputs, onSubmit, button, getFormValues, formError }) => {
     const errors = Object.values(formErrors);
     const hasError = errors.find((value) => value === true);
     if (hasError) {
-      console.log("I will not submit");
       return;
     }
-    console.log("Submitted!");
     onSubmit(formValues);
   };
 
