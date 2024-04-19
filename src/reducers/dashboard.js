@@ -1,7 +1,8 @@
 export const initState = {
     monthlyIncomeData: {},
     sixMonthsData: [],
-    lastMonthData: []
+    lastMonthData: [],
+    itemsSummary: {}
 };
 
 export const reducer = (state, action) => {
@@ -40,6 +41,18 @@ export const reducer = (state, action) => {
             return {
                 ...state,
                 lastMonthData: action.data
+            };
+        }
+        case "set_items_summary": {
+            if (!action.data || typeof action.data !== "object") {
+                return {
+                    ...state,
+                    itemsSummary: {}
+                };
+            }
+            return {
+                ...state,
+                itemsSummary: action.data
             };
         }
         default: {
