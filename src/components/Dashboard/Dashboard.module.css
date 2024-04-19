@@ -57,12 +57,17 @@
 }
 
 .monthly-income,
-.monthly-sales {
+.monthly-sales,
+.summary {
     grid-column: 1 / span 2;
     margin: 0 auto;
 }
 
-@media (min-width: 992px) {
+.summary__table h3 {
+    text-align: center;
+}
+
+@media (min-width: 768px) {
     .chart {
         grid-column: 2 / 3;
     }
@@ -70,5 +75,9 @@
     .monthly-income,
     .monthly-sales {
         grid-column: 1 / 2;
+    }
+
+    .summary {
+        grid-column: 2 / 3;
     }
 }
