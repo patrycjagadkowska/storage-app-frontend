@@ -29,6 +29,7 @@ const LoginForm = () => {
     ];
 
     const submitHandler = async (formData) => {
+        setRequestError(null);
         const formValues = Object.values(formData);
         const isEmpty = checkIfEmpty(formValues);
         if (isEmpty) {
