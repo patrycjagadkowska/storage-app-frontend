@@ -16,14 +16,16 @@ export const fetchData = async (token, url) => {
 };
 
 export const checkIfEmpty = (values) => {
+    let isError;
     for (const value of values) {
         const type = typeof value;
         if (type === undefined || null) {
-            return true;
+            isError = true;
+            break;
         } else if (type === "string" && value.trim() === "") {
-            return true;
-        } else {
-            return false;
-        }
+            isError = true;
+            break;
+        } 
     }
+    return isError;
 };
