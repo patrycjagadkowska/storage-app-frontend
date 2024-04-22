@@ -42,7 +42,9 @@ const Stock = () => {
             const filteredItems = state.items && state.items.filter((i) => {
                 return i.name.toLowerCase().includes(value.toLowerCase())
             });
-            dispatch({ type: "set_items", data: filteredItems });
+            if (JSON.stringify(filteredItems) !== JSON.stringify(state.items)) {
+                dispatch({ type: "set_items", data: filteredItems });
+            }
         } else if (name === "itemName" && value === "") {
             dispatch({ type: "set_items", data: loadedData[1].data });
         }
