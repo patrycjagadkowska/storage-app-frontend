@@ -1,10 +1,13 @@
 import { useNavigate } from "react-router";
+import { useState } from "react";
 
 import CustomForm from "../UI/CustomForm";
 import { validateContactName, validatePhone, validateAddress, validateOptionalEmail } from "../../constants/validationFns";
+import { checkIfEmpty } from "../../constants/helperFns";
 
 const ContactsForm = () => {
     const navigate = useNavigate();
+    const [ requestError, setRequestError ] = useState(null);
 
     const inputs = [
         {
@@ -42,8 +45,21 @@ const ContactsForm = () => {
     ];
 
     const onSubmit = async (formValues) => {
-        const { name, email, address, phone } = formValues;
+        setRequestError(null);
         const token = localStorage.getItem("token");
+        const contactData = {};
+
+        for (const key in formValues) {
+            const isEmpty = checkIfEmpty([formValues[key]]);
+            if (!isEmpty) {
+                contactData[key] = formValues[key];
+            }
+        }
+
+        if (!contactData.name) {
+            setRequestError("Contact must have a name.");
+            return;
+        }
 
         const res = await fetch("http://localhost:8080/addContact", {
             method: "POST",
@@ -51,9 +67,7 @@ const ContactsForm = () => {
                 "Content-Type": "application/json",
                 "Authorization": "Bearer " + token
             },
-            body: JSON.stringify({
-                name, email, address, phone
-            })
+            body: JSON.stringify(contactData)
         });
 
         if (res.status === 200 || res.status === 201) {
@@ -64,7 +78,12 @@ const ContactsForm = () => {
     };
 
     return (
-        <CustomForm inputs={inputs} onSubmit={onSubmit} button="Add contact" />
+      <CustomForm
+        inputs={inputs}
+        onSubmit={onSubmit}
+        button="Add contact"
+        formError={requestError}
+      />
     );
 };
 
