@@ -14,67 +14,81 @@ import Contacts, { loader as contactsLoader } from "./pages/Dashboard/Contacts";
 import Supplies, { loader as suppliesLoader } from "./pages/Dashboard/Supplies";
 import Sales, { loader as salesLoader } from "./pages/Dashboard/Sales";
 import Stock, { loader as stockLoader } from "./pages/Dashboard/Stock";
+import ErrorBoundary from "./pages/Dashboard/ErrorBoundary";
 
 function App() {
   const router = createBrowserRouter([
     {
       path: "/",
       element: <Layout />,
+      errorElement: <ErrorBoundary />,
       children: [
         {
           index: true,
-          element: <Home />
+          element: <Home />,
+          errorElement: <ErrorBoundary />
         },
         {
           path: "signup",
-          element: <Signup />
+          element: <Signup />,
+          errorElement: <ErrorBoundary />
         },
         {
           path: "login",
-          element: <Login />
+          element: <Login />,
+          errorElement: <ErrorBoundary />
         },
         {
           path: "plans",
-          element: <PlansPage />
+          element: <PlansPage />,
+          errorElement: <ErrorBoundary />
         },
         {
           path: "reviews",
-          element: <ReviewsPage />
+          element: <ReviewsPage />,
+          errorElement: <ErrorBoundary />
         }
       ]
     }, {
       path: "/dashboard",
       element: <DashboardLayout />,
+      errorElement: <ErrorBoundary />,
       children: [
         {
           index: true,
           element: <Dashboard />,
-          loader: dashboardLoader
+          loader: dashboardLoader,
+          errorElement: <ErrorBoundary />
         },
         {
           path: "settings",
           element: <Settings />,
-          loader: settingsLoader
+          loader: settingsLoader,
+          errorElement: <ErrorBoundary />
         },
         {
           path: "contacts",
           element: <Contacts />,
-          loader: contactsLoader
+          loader: contactsLoader,
+          errorElement: <ErrorBoundary />
         },
         {
           path: "supplies",
           element: <Supplies />,
-          loader: suppliesLoader
+          loader: suppliesLoader,
+          errorElement: <ErrorBoundary />
         },
         {
           path: "sales",
           element: <Sales />,
-          loader: salesLoader
+          loader: salesLoader,
+          errorElement: <ErrorBoundary />
         },
         {
           path: "stock",
           element: <Stock />,
-          loader: stockLoader
+          loader: stockLoader,
+          errorElement: <ErrorBoundary />
         }
       ]
     }
