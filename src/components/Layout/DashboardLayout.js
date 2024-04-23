@@ -2,13 +2,22 @@ import { FaWarehouse, FaPowerOff } from "react-icons/fa";
 import { TbTruckDelivery } from "react-icons/tb";
 import { MdPointOfSale } from "react-icons/md";
 import { IoMdContact, IoMdSettings } from "react-icons/io";
+import { useContext } from "react";
+import { useNavigate } from "react-router";
 
 import Header from "./Header";
 import DashboardFooter from "./DashboardFooter";
 import DashboardMain from "./DashboardMain";
+import { AuthContext } from "../../context/auth-context";
 
 const DashboardLayout = () => {
-    const logout = () => {};
+    const { logout } = useContext(AuthContext);
+    const navigate = useNavigate();
+
+    const logoutHandler = () => {
+        logout();
+        navigate("/");
+    };
     
     const headerLinks = [
         {
@@ -45,7 +54,7 @@ const DashboardLayout = () => {
             type: "svg-button",
             text: "logout",
             svg: <FaPowerOff />,
-            fn: logout
+            fn: logoutHandler
         }
     ];
 
