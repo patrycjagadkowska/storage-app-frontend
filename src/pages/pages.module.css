@@ -1,0 +1,35 @@
+
+.error-page {
+    margin: 0 1rem;
+}
+
+.error-page__header {
+    font-size: 2.5rem;
+}
+
+.error-page__sorry {
+    font-size: 2rem;
+    font-style: italic;
+}
+
+.error-page__status {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.error-page__message {
+    font-size: 1rem;
+}
+
+@media (min-width: 768px) {
+    .error-page {
+        width: 70%;
+        margin: 5rem auto;
+    }
+}
+
+@media (min-width: 992px) {
+      .error-page {
+        width: 50%;
+    }
+}

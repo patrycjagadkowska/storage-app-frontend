@@ -14,7 +14,7 @@ import Contacts, { loader as contactsLoader } from "./pages/Dashboard/Contacts";
 import Supplies, { loader as suppliesLoader } from "./pages/Dashboard/Supplies";
 import Sales, { loader as salesLoader } from "./pages/Dashboard/Sales";
 import Stock, { loader as stockLoader } from "./pages/Dashboard/Stock";
-import ErrorBoundary from "./pages/Dashboard/ErrorBoundary";
+import ErrorBoundary from "./pages/ErrorBoundary";
 
 function App() {
   const router = createBrowserRouter([
