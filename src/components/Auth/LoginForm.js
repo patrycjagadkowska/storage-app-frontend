@@ -1,13 +1,15 @@
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useContext } from "react";
 
 import CustomForm from "../UI/CustomForm";
 import { validateEmail, validatePassword } from "../../constants/validationFns";
 import { checkIfEmpty } from "../../constants/helperFns";
+import { AuthContext } from "../../context/auth-context";
 
 const LoginForm = () => {
     const navigate = useNavigate();
     const [ requestError, setRequestError ] = useState(null);
+    const { login } = useContext(AuthContext);
 
     const inputs = [
         {
@@ -49,6 +51,7 @@ const LoginForm = () => {
                 const { userId, token } = data;
                 localStorage.setItem("userId", userId);
                 localStorage.setItem("token", token);
+                login(userId);
                 navigate("/dashboard");
             } else {
                 console.log(res);
