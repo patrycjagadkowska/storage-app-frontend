@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect } from "react";
 
 const initData = {
     isLoggedIn: false,
@@ -12,6 +12,14 @@ export const AuthContext = createContext(initData);
 const AuthProvider = ({ children }) =>{
     const [ userId, setUserId ] = useState(undefined);
     const [ isLoggedIn, setIsLoggedIn ] = useState(false);
+
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+        const userId = localStorage.getItem("userId");
+        if (token && userId) {
+            login(userId);
+        }
+    }, []);
 
     const login = (userId) => {
         setUserId(userId);
