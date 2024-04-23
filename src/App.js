@@ -15,6 +15,7 @@ import Supplies, { loader as suppliesLoader } from "./pages/Dashboard/Supplies";
 import Sales, { loader as salesLoader } from "./pages/Dashboard/Sales";
 import Stock, { loader as stockLoader } from "./pages/Dashboard/Stock";
 import ErrorBoundary from "./pages/ErrorBoundary";
+import NotFoundPage from "./pages/NotFoundPage";
 
 function App() {
   const router = createBrowserRouter([
@@ -46,6 +47,11 @@ function App() {
         {
           path: "reviews",
           element: <ReviewsPage />,
+          errorElement: <ErrorBoundary />
+        },
+        {
+          path: "*",
+          element: <NotFoundPage />,
           errorElement: <ErrorBoundary />
         }
       ]
@@ -88,6 +94,11 @@ function App() {
           path: "stock",
           element: <Stock />,
           loader: stockLoader,
+          errorElement: <ErrorBoundary />
+        },
+        {
+          path: "*",
+          element: <NotFoundPage />,
           errorElement: <ErrorBoundary />
         }
       ]
