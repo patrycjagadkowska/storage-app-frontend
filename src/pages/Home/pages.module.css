@@ -79,6 +79,13 @@
 }
 
 .cta-container {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    align-items: center;
     width: 100%;
     background-color: #fabc9d;
     border-radius: 1rem;
