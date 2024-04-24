@@ -7,6 +7,7 @@ import HeaderWithButtons from "../../components/UI/HeaderWithButons";
 import { initState, reducer } from "../../reducers/contacts";
 import DeleteForm from "../../components/ModalForms/DeleteForm";
 import EditContactForm from "../../components/ModalForms/EditContactForm";
+import { validateTokenExpiration } from "../../constants/validationFns";
 
 const Contacts = () => {
     const [ state, dispatch ] = useReducer(reducer, initState);
@@ -155,6 +156,14 @@ export default Contacts;
 
 export const loader = async () => {
     const token = localStorage.getItem("token");
+    const expiresIn = localStorage.getItem("expiresIn");
+    const tokenNotExpired = validateTokenExpiration(expiresIn);
+
+    if (!tokenNotExpired) {
+      const error = new Error("Token expired. Please login again.");
+      error.status = 401;
+      throw error;
+    }
 
     const res = await fetch("http://localhost:8080/contacts", {
         method: "GET",

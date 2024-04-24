@@ -7,6 +7,7 @@ import { fetchData } from "../../constants/helperFns";
 import SixMonthsChart from "../../components/Dashboard/SixMonthsChart";
 import MonthPieChart from "../../components/Dashboard/MonthPieChart";
 import Summary from "../../components/Dashboard/Summary";
+import { validateTokenExpiration } from "../../constants/validationFns";
 
 import classes from "./pages.module.css";
 
@@ -42,6 +43,15 @@ export default Dashboard;
 
 export const loader = async () => {
     const token = localStorage.getItem("token");
+    const expiresIn = localStorage.getItem("expiresIn");
+    const tokenNotExpired = validateTokenExpiration(expiresIn);
+
+    if (!tokenNotExpired) {
+        const error = new Error("Token expired. Please login again.");
+        error.status = 401;
+        throw error;
+    }
+    
     const month = new Date().getMonth();
     const year = new Date().getFullYear();
 

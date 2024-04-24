@@ -9,6 +9,7 @@ import AddContactForm from "../../components/ModalForms/AddContactForm";
 import EditForm from "../../components/ModalForms/EditForm";
 import DeleteForm from "../../components/ModalForms/DeleteForm";
 import { initState, reducer } from "../../reducers/sales";
+import { validateTokenExpiration } from "../../constants/validationFns";
 
 const Sales = () => {
     const [ state, dispatch ] = useReducer(reducer, initState);
@@ -230,6 +231,15 @@ export default Sales;
 
 export const loader = async () => {
     const token = localStorage.getItem("token");
+    const expiresIn = localStorage.getItem("expiresIn");
+    const tokenNotExpired = validateTokenExpiration(expiresIn);
+
+    if (!tokenNotExpired) {
+        const error = new Error("Token expired. Please login again.");
+        error.status = 401;
+        throw error;
+    }
+    
     const contactsUrl = "http://localhost:8080/contacts";
     const salesUrl = "http://localhost:8080/sales";
     const categoriesUrl = "http://localhost:8080/categories";
