@@ -1,5 +1,7 @@
 import { useRouteError } from "react-router";
 
+import CustomLink from "../components/UI/CustomLink";
+
 import classes from "./pages.module.css";
 
 const ErrorBoundary = () => {
@@ -19,6 +21,12 @@ const ErrorBoundary = () => {
             <p className={classes["error-page__message"]}>
               {error.message || error.data}
             </p>
+            {
+              error.status === 401 &&
+              <div className={classes["error-page__links"]}>
+                <CustomLink to="/login">go to login page</CustomLink>
+              </div>
+            }
           </div>
         );
 
