@@ -48,9 +48,10 @@ const LoginForm = () => {
             });
             if (res.status === 200 | res.status === 201) {
                 const data = await res.json();
-                const { userId, token } = data;
+                const { userId, token, expiresIn } = data;
                 localStorage.setItem("userId", userId);
                 localStorage.setItem("token", token);
+                localStorage.setItem("expiresIn", expiresIn);
                 login(userId);
                 navigate("/dashboard");
             } else {
