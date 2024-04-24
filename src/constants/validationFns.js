@@ -137,3 +137,9 @@ export const validateInventoryQuantity = (value) => {
     return null;
   }
 };
+
+export const validateTokenExpiration = (expiresIn) => {
+    const expirationDate = new Date(expiresIn);
+    const currentDate = new Date();
+    return expirationDate > currentDate;
+};
