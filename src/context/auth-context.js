@@ -1,5 +1,7 @@
 import { createContext, useState, useEffect } from "react";
 
+import { validateTokenExpiration } from "../constants/validationFns";
+
 const initData = {
     isLoggedIn: false,
     login: (userId) => {},
@@ -16,7 +18,9 @@ const AuthProvider = ({ children }) =>{
     useEffect(() => {
         const token = localStorage.getItem("token");
         const userId = localStorage.getItem("userId");
-        if (token && userId) {
+        const expiresIn = localStorage.getItem("expiresIn");
+        const tokenNotExpired = validateTokenExpiration(expiresIn);
+        if (token && userId && tokenNotExpired) {
             login(userId);
         }
     }, []);
