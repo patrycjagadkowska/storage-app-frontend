@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router";
-import { Link } from "react-router-dom";
 
 import CustomButton from "../components/UI/CustomButton";
 import CustomLink from "../components/UI/CustomLink";
